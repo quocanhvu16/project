@@ -1,0 +1,39 @@
+{
+    "book": [
+        {
+            "id": 1,
+            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+            "name": "Đắc nhân tâm",
+            "cost": "108.000đ",
+            "sale":0
+        },
+        {
+            "id": 2,
+            "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
+            "name": "Truyện Kiều",
+            "cost": "53.000đ",
+            "sale": 78
+        },
+        {
+            "id": 3,
+            "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
+            "name": "Chiếc lá cuối cùng",
+            "cost": "73.000đ",
+            "sale":43
+        },
+        {
+            "id": 4,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg/250px-Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg",
+            "name": "Harry Potter và hòn đá phù thủy",
+            "cost": "89.000đ",
+            "sale":34
+        },
+        {
+            "id": 5,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        }
+    ]
+}

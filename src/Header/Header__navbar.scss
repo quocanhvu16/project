@@ -1,0 +1,30 @@
+.header__navbar {
+    width: 100%;
+    background-color: rgb(233,7,79);
+    height: 40px;
+    padding: 0 10.5%;
+    &--list{
+        display: flex;
+        list-style: none;
+        margin: 0;
+        height: 100%;
+        padding: 0;
+
+        li {
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+
+            a{
+                text-decoration: none;
+                color: aliceblue;
+            }
+        }
+
+        .li__active{
+            background-color: rgba(201,33,39);
+        }
+    }
+}

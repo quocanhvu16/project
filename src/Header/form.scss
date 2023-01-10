@@ -1,0 +1,187 @@
+.form {
+    position: fixed;
+    display: block;
+    background-color: #ffffff;
+    width: 30%;
+    top: 15%;
+    left: 33%;
+    z-index: 2;
+    border-radius: 10px;
+
+    .tab{
+        display: flex;
+        list-style: none;
+        padding: 24px 8px 16px 8px;
+        font-size: 15px;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        margin: 0;
+
+        .tabLogIn{
+            flex:1;
+            text-align: center;
+            padding: 0 8px;
+            height: 30px;
+            cursor: pointer;
+
+            &:hover{
+                color: #C92127;
+            }
+        }
+
+        .tabSignUp{
+            flex:1;
+            text-align: center;
+            padding: 0 8px;
+            height: 30px;
+            cursor: pointer;
+
+            &:hover{
+                color: #C92127;
+            }
+        }
+
+        .active{
+            color: #C92127;
+
+            hr{
+                border: 1px solid #C92127;
+                background-color: #C92127;
+            }
+        }
+    }
+
+    .form-login{
+        width: 100%;
+        padding: 0 10% 10% 10%;
+
+        .form__group{
+            font-size: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            span {
+                position: absolute;
+                right: 3%;
+                top: 43%;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+                color: rgb(0 123 255);
+            }
+
+            .text{
+                font-size: 15px;
+                padding: 4px;
+                margin-bottom: 5px;
+            }
+
+            input {
+                padding-left: 5%;
+                padding-right: 20%;
+                height: 35px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+
+                &:focus{
+                    outline: none !important;
+                    box-shadow: 0 0 0 3px rgb(0 123 255 / 25%);
+                }
+            }
+
+            .err{
+                margin-top: 5px;
+                color: red;
+                width: 100%;
+                height: 20px;
+            }
+        }
+
+        .button__group{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10%;
+
+            .button{
+                min-width: 70%;
+                padding: 3% 25%;
+                font-size: 15px;
+                border-radius: 3%;
+                border-radius: 8px;
+                border: none;
+                background-color: transparent;
+                font-weight:700;
+            }
+
+            .button__signUp {
+                background-color: #e0e0e0;
+                pointer-events: none;
+            }
+
+            .button__active {
+                background-color:#c92127 ;
+                color: white;
+                cursor: pointer;
+                pointer-events:auto;
+
+                &:hover{
+                    opacity: 0.5;
+                }
+            }
+            .button__skip {
+                background-color: #ffffff;
+                border: 1px solid #c92127;
+                color: #c92127;
+                cursor: pointer;
+                margin-top: 5%;
+
+                &:hover{
+                    opacity: 0.5;
+                }
+            }
+        }
+
+        .aside {
+            margin-top: 3%;
+
+            span{
+                font-size: 13px;
+            }
+        }
+        
+    }
+}
+
+.scrollFormDown {
+    animation: scrollDown 0.8s linear;
+}
+
+@keyframes scrollDown {
+    from{
+        opacity: 0;
+        transform: translateY(calc(-124%));
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scrollFormUp {
+    animation: scrollUp 0.8s linear forwards;
+}
+
+@keyframes scrollUp {
+    from{
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to{
+        opacity: 0;
+        transform: translateY(calc(-124%));
+    }
+}
