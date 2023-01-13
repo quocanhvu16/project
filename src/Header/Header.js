@@ -308,7 +308,6 @@ function Header(){
       }
 
 
-
       <div className='header'>
        <div className='header__top'>
         <img src={banner}/>
