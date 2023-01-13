@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux'
 
-import banner from '../assets/img/banner2.jpg'
+import banner from '../assets/img/banner1.jpg'
 import icon from '../assets/img/icon.jpg'
 import {isValidName,isValidUser,isValidPass} from './Validation'
 
@@ -24,7 +24,6 @@ function Header(){
   const [userErr, setUserErr] = useState("")
   const [passErr, setPassErr] = useState("")
   const [checked, setChecked] = useState(false)
-  const [showNavbarList, setShowNavbarList] = useState(false)
 
   //Bật tắt button
   useEffect(()=>{
@@ -124,37 +123,21 @@ function Header(){
     setUp()
   }
 
-  const handleShowNavbarList = () => {
-    setShowNavbarList(true)
-    var a= document.getElementById("navbar")
-    a.style.animation= "scrollRight 0.5s linear forwards"
-    a.style.display= "block"
-  }
-
-  const handleUnShowNavbarList = () => {
-    var a= document.getElementById("navbar")
-    setTimeout(()=>{
-      a.style.display= "none"
-      setShowNavbarList(false)
-    },500)
-    a.style.animation= "scrollLeft 0.5s linear forwards"
-  }
   return (
     <div>
-
-
       {/*Khi tab đăng ký hiện lến sẽ làm mờ khung web */}
-      {(showForm === true ||showNavbarList===true) &&
+      {showForm === true &&
         <div 
           className="frostApp"
           onClick={hiddenForm}>
         </div>
       }
 
+      {/*Phần HEADER */}
+      <header className="header">
 
-
-      {/*Tab đăng ký đăng nhập */}
-      {showForm === true && 
+        {/*Tab đăng ký đăng nhập */}
+        {showForm === true && 
           <div 
             className={classNames("form",{scrollFormDown:showForm})} 
             id="form"
@@ -305,157 +288,109 @@ function Header(){
               </div>
             }
           </div>
-      }
+        }
 
+        {/*Phần banner của header */}
+        <div className="row header__top">
+          <div className='col l-12 banner'>
+            {/* <img src={banner} alt=""></img> */}
+          </div>
+        </div>
 
+        {/*Phần NavBar của header */}
+        <div className="header__bottom">
 
-      <div className='header'>
-       <div className='header__top'>
-        <img src={banner}/>
-       </div>
-       <div className='header__bottom grid wide'>
-        <div className='row container'>
-          <div className='col l-2 m-0 c-0'>
+          {/*Logo của nhóm*/}
+          <div>
             <img src={icon} className="logo"/>
           </div>
-          <div className='col l-6 m-8 c-8'>
-            <div className='search'>
-              <input 
-                className="search__input" 
-                type="text"  
-                placeholder="Tìm kiếm ..." 
-                autoFocus/>
-              <button className="search__button">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
+
+          {/*Thanh tìm kiếm*/}
+          <div className="search">
+            <input 
+              className="search__input" 
+              type="text"  
+              placeholder="Tìm kiếm ..." 
+              autoFocus/>
+            <button className="search__button">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button> 
           </div>
-          <div className='col l-4 m-4 c-4 navbar'>
-            <div className='row container'>
-              <div className='col l-4 m-0 c-0'>
-                <div className="navbar__item">
+
+          {/*Các list lựa chọn*/}
+          <div className="navbar">
+
+            <div className="navbar__item">
+              <i className="fa-solid fa-bell"></i>
+              <p>Thông Báo</p>
+
+              <div className='navbar__item--hover'>
+                <div className='hover__header'>
                   <i className="fa-solid fa-bell"></i>
                   <p>Thông báo</p>
-                  <div className='navbar__item--hover'>
-                    <div className='hover__header'>
-                      <i className="fa-solid fa-bell"></i>
-                      <p>Thông báo</p>
-                    </div> 
-                    <div className='hover__container'>
-                      <img src='https://vi.seaicons.com/wp-content/uploads/2016/08/Very-Basic-Lock-icon-1.png'/>
-                      <p>Vui lòng đăng nhập để xem thông báo</p>
-                    </div>
-                    <button className='btn__signIn'
-                            onClick={clickLogInBtn}
-                    >
-                      Đăng nhập
-                    </button>
-                    <button className='btn__signUp'
-                            onClick={clickSignUpBtn}
-                    >
-                      Đăng ký
-                    </button>
-                  </div>
+                </div> 
+                <div className='hover__container'>
+                  <img src='https://vi.seaicons.com/wp-content/uploads/2016/08/Very-Basic-Lock-icon-1.png'/>
+                  <p>Vui lòng đăng nhập để xem thông báo</p>
                 </div>
+                <button className='btn__signIn'
+                        onClick={clickLogInBtn}
+                >
+                  Đăng nhập
+                </button>
+                <button className='btn__signUp'
+                        onClick={clickSignUpBtn}
+                >
+                  Đăng ký
+                </button>
               </div>
-              <div className='col l-4 m-6 c-6'>
-                <div className="navbar__item">
-                  <i className="fa-solid fa-cart-shopping"></i>
-                  <p>Giỏ Hàng</p>
-                </div>
-              </div>
-              <div className='col l-4 m-6 c-6'>
-                <div className="navbar__item">
-                  <i className="fa-solid fa-user"></i>
-                  <p>Tài khoản</p>
-                  <div className="navbar__item--hover">
-                    <button className='btn__signIn'
-                            onClick={clickLogInBtn}
-                    >
-                      Đăng nhập
-                    </button>
-                    <button className='btn__signUp'
-                            onClick={clickSignUpBtn}
-                    >
-                      Đăng ký
-                    </button>
-                  </div>
-                </div>
+            </div>
+
+            <div className="navbar__item">
+              <i className="fa-solid fa-cart-shopping"></i>
+              <p>Giỏ Hàng</p>
+            </div>
+
+            <div className="navbar__item">
+              <i className="fa-solid fa-user"></i>
+              <p>Tài Khoản</p>
+
+              {/*Button đăng ký hoặc đăng nhập*/}
+              <div className="navbar__item--hover">
+                <button className='btn__signIn'
+                        onClick={clickLogInBtn}
+                >
+                  Đăng nhập
+                </button>
+                <button className='btn__signUp'
+                        onClick={clickSignUpBtn}
+                >
+                  Đăng ký
+                </button>
               </div>
             </div>
           </div>
         </div>
-       </div>
-
-       <div className="header__navbar">
-          <div className='grid wide'>
-
-
-            {/* Nav PC*/}
-            <div className='row header__navbar--list nav--pc'>
-              <div className='col l-2 m-2 navbar active'>
-                <a href=''><p>Trang chủ</p></a>
-              </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Sách giấy</p></a>
-              </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Sách điện tử</p></a>
-              </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Audio Book</p></a>
-              </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Video Book</p></a>
-              </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Thư viện</p></a>
-              </div>
-            </div>
-
-            {/*Nav tablet-mobile */}
-            <div className='row header__navbar--list nav--mobile'>
-              <div className='col m-9 c-9'>
-                <div className='icon-list'
-                      onClick={handleShowNavbarList}>
-                  <i className="fa-solid fa-list-ul"></i>
-                </div>
-              </div>
-              <div className='nav--mobile-list' id='navbar'>
-                <div className='icon-close icon-list'
-                     onClick={handleUnShowNavbarList}
-                    >
-                  <i className="fa-solid fa-xmark"></i>
-                </div>
-                <div className='list active'>
-                  <i className="fa-solid fa-house"></i>
-                  <a href=''><p>Trang chủ</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-book"></i>
-                  <a href=''><p>Sách giấy</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-sharp fa-solid fa-book-atlas"></i>
-                  <a href=''><p>Sách điện tử</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-play"></i>
-                  <a href=''><p>Audio Book</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-video"></i>
-                  <a href=''><p>Video Book</p></a>
-                </div>
-              </div>
-              <div className='col m-3 c-3 navbar'>
-                <a href=''><p>Thư viện</p></a>
-              </div>
-            </div>
-    
-          </div>
-       </div>
-      </div>
+        <div className="header__navbar">
+          <ul className="header__navbar--list">
+            <li className='li__active'>
+              <a href=''>Trang chủ</a>
+            </li>
+            <li>
+              <a href=''>Sách giấy</a>
+            </li>
+            <li>
+              <a href=''>Sách điện tử</a>
+            </li>
+            <li>
+              <a href=''>Audio Book</a>
+            </li>
+            <li>
+              <a href=''>Video Book</a>
+            </li>
+          </ul>
+        </div>
+      </header>
     </div>
   );
 }

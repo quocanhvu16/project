@@ -1,30 +1,173 @@
 .header__navbar {
-    width: 100%;
+    // width: 100%;
     background-color: rgb(233,7,79);
     height: 40px;
-    padding: 0 10.5%;
-    &--list{
-        display: flex;
-        list-style: none;
-        margin: 0;
-        height: 100%;
-        padding: 0;
-
-        li {
+    // padding: 0 10.5%;
+    .nav--mobile{
+        display: none;
+        height: 40px;
+        .icon-list{
+            height: 40px;
+            width: 40px;
             cursor: pointer;
-            font-size: 20px;
-            padding: 0 5%;
-            display: flex;
-            align-items: center;
+            i{
+                margin-top: 5px;
+                font-size: 30px;
+                color: white;
+            }
+        }
+        .nav--mobile-list{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 40%;
+            background-color: white;
+            padding: 40px 0;
+            z-index: 2;
+            display: none;
+            .icon-list{
+                position: absolute;
+                top: 0;
+                right: 0;
+                color: #333;
+                background-color: #333;
+                text-align: center;
+                cursor: pointer;
+            }
+            .list{
+                display: flex;
+                flex-direction: row;
+                padding: 20px 0px;
+                align-items: center;
+                text-align: center;
+                background-color: white;
+                cursor: pointer;
 
-            a{
-                text-decoration: none;
-                color: aliceblue;
+                i{
+                    font-size: 30px;
+                    min-width: 90px;
+                }
+                a{
+                    text-decoration: none;
+                    font-size: 25px;
+                }
+                &:hover{
+                    background-color: rgb(233,7,79);
+                }
+            }
+            .active{
+                background-color: rgba(201,33,39);
             }
         }
 
-        .li__active{
+
+        .navbar{
+            cursor: pointer;
+            a {
+                text-decoration: none;
+            }
+            p {
+                font-size: 20px;
+                text-align: center;
+                margin-top: 10px;
+                color: white;
+            }
+        }
+    }
+    .nav--pc{
+        height: 40px;
+
+        .navbar{
+            cursor: pointer;
+            a {
+                text-decoration: none;
+            }
+            p {
+                font-size: 20px;
+                text-align: center;
+                margin-top: 10px;
+                color: white;
+            }
+            &:hover{
+                background-color: rgba(201,33,39);
+            }
+        }
+
+        .active{
             background-color: rgba(201,33,39);
         }
+    }
+}
+
+@media (max-width: 1023px){
+    .header__navbar{
+        .nav--pc{
+            display: none;
+        }
+
+        .nav--mobile{
+            display: flex;
+        }
+    }
+}
+@media (max-width: 490px){
+    .header__bottom{
+        .navbar{
+            &__item{
+                cursor: pointer;
+                height: 70px;
+                p{
+                    display: none;
+                }
+                i{
+                }
+            }
+        }
+    }
+}
+@media (max-width: 740px){
+    .header__bottom{
+        .search{
+            &__input{
+                margin-left: 15px;
+            }
+        }
+    }
+    .header__navbar{
+        .nav--pc{
+            display: none;
+        }
+
+        .nav--mobile{
+            .icon-list{
+                margin-left: 20px;
+            }
+            display: flex;
+            .nav--mobile-list{
+                width: 60%;
+            }
+        }
+    }
+}
+@keyframes scrollLeft {
+    from{
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to{
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes scrollRight {
+    from{
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
     }
 }

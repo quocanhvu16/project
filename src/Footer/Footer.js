@@ -14,11 +14,11 @@ function Footer(){
               <div className='icon'>
                 <a href='https://www.facebook.com/'>
                   <i className="fa-brands fa-facebook"></i>
-                  <i class="fa-brands fa-instagram"></i>
+                  <i className="fa-brands fa-instagram"></i>
                   <i className="fa-brands fa-youtube"></i>
-                  <i class="fa-brands fa-twitter"></i>
-                  <i class="fa-brands fa-pinterest"></i>
-                  <i class="fa-brands fa-square-tumblr"></i>
+                  <i className="fa-brands fa-twitter"></i>
+                  <i className="fa-brands fa-pinterest"></i>
+                  <i className="fa-brands fa-square-tumblr"></i>
                 </a>
               </div>
             </div>
@@ -57,15 +57,15 @@ function Footer(){
             </div>
             <div className='row row1'>
               <div className='col l-4'>
-                <i class="fa-solid fa-location-dot"></i>
+                <i className="fa-solid fa-location-dot"></i>
                 <span>Số 1 Đại Cồ Việt Hai Bà Trưng Hà Nội</span>
               </div>
               <div className='col l-4'>
-                <i class="fa-solid fa-envelope"></i>
+                <i className="fa-solid fa-envelope"></i>
                 <span>cskh@fahasa.com.vn</span>
               </div>
               <div className='col l-4'>
-                <i class="fa-sharp fa-solid fa-phone"></i>
+                <i className="fa-sharp fa-solid fa-phone"></i>
                 <span>1900636467</span>
               </div>
             </div>

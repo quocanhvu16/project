@@ -1,11 +1,13 @@
+
 .form {
     position: fixed;
     display: block;
     background-color: #ffffff;
     width: 30%;
     top: 15%;
-    left: 33%;
-    z-index: 2;
+    // left: 33%;
+    margin: 0 calc((100% - 30%) / 2);
+    z-index: 2; 
     border-radius: 10px;
 
     .tab{
@@ -107,7 +109,7 @@
             margin-top: 10%;
 
             .button{
-                min-width: 70%;
+                min-width: 80%;
                 padding: 3% 25%;
                 font-size: 15px;
                 border-radius: 3%;
@@ -185,3 +187,36 @@
         transform: translateY(calc(-124%));
     }
 }
+
+@media (min-width:740px) and (max-width:1040px){
+    .form{
+        width: 50%;
+        margin: 0 calc((100% - 50%) / 2);
+    }
+}
+@media (min-width:1041px) and (max-width:1237px){
+    .form{
+        width: 40%;
+        margin: 0 calc((100% - 40%) / 2);
+    }
+}
+
+@media (max-width:740px){
+    .form{
+        width: 80%;
+        margin: 0 calc((100% - 80%) / 2);
+    }
+}
+
+@media (max-width:410px){
+    .form{
+        .form-login{
+            .button__group{
+                .button{
+                    min-width: 100%;
+                }
+            }
+        }
+    }
+}
+

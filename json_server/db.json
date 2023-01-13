@@ -34,6 +34,74 @@
             "name": "Fairy Tail",
             "cost": "56.000đ",
             "sale":12
+        },
+        {
+            "id": 6,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 7,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 8,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 9,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 10,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 11,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        },
+        {
+            "id": 12,
+            "image": "https://upload.wikimedia.org/wikipedia/vi/thumb/e/e1/FairyTail-Volume_1_Cover.jpg/220px-FairyTail-Volume_1_Cover.jpg",
+            "name": "Fairy Tail",
+            "cost": "56.000đ",
+            "sale":12
+        }
+    ],
+
+    "user": [
+        {
+            "id":1,
+            "name":"Binh ML",
+            "user": "admin",
+            "pass": "admin",
+            "token": "",
+            "type": "admin"
+        },
+        {
+            "id":2,
+            "name":"Binh ML",
+            "user": "user",
+            "pass": "user",
+            "token": "",
+            "type": "user"
         }
     ]
 }
