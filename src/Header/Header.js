@@ -15,7 +15,6 @@ function Header(){
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
   const tabs = useSelector(state => state.setTab)
-  console.log(tabs)
   const [tabLogIn,setTabLogIn]=useState(true)
   const [tabSignUp,setTabSignUp]=useState(false)
   const [showPass, setShowPass] = useState(false)
