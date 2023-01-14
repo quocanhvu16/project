@@ -14,6 +14,8 @@ function Header(){
   const dispatch = useDispatch()
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
+  const tabs = useSelector(state => state.setTab)
+  console.log(tabs)
   const [tabLogIn,setTabLogIn]=useState(true)
   const [tabSignUp,setTabSignUp]=useState(false)
   const [showPass, setShowPass] = useState(false)
@@ -25,7 +27,6 @@ function Header(){
   const [passErr, setPassErr] = useState("")
   const [checked, setChecked] = useState(false)
   const [showNavbarList, setShowNavbarList] = useState(false)
-
   //Bật tắt button
   useEffect(()=>{
     if(name !== "" && user !== "" && pass !== "" && checked === true){
@@ -392,23 +393,29 @@ function Header(){
 
             {/* Nav PC*/}
             <div className='row header__navbar--list nav--pc'>
-              <div className='col l-2 m-2 navbar active'>
-                <a href=''><p>Trang chủ</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='trangchu'})}
+                    onClick={()=> dispatch({"type":"tabtrangchu"})}>
+                <p>Trang chủ</p>
               </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Sách giấy</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='sachgiay'})}
+                    onClick={()=> dispatch({"type":"tabsachgiay"})}>
+                <p>Sách giấy</p>
               </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Sách điện tử</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='sachdientu'})}
+                  onClick={()=> dispatch({"type":"tabsachdientu"})}>
+                <p>Sách điện tử</p>
               </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Audio Book</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='audiobook'})}
+                    onClick={()=> dispatch({"type":"tabaudiobook"})}>
+                <p>Audio Book</p>
               </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Video Book</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='videobook'})}
+                   onClick={()=> dispatch({"type":"tabvideobook"})}>
+                <p>Video Book</p>
               </div>
-              <div className='col l-2 m-2 navbar'>
-                <a href=''><p>Thư viện</p></a>
+              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='thuvien'})}
+                  onClick={()=> dispatch({"type":"tabthuvien"})}>
+                <p>Thư viện</p>
               </div>
             </div>
 
