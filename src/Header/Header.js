@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import banner from '../assets/img/banner2.jpg'
 import icon from '../assets/img/icon.jpg'
 import {isValidName,isValidUser,isValidPass} from './Validation'
+import { Link } from 'react-router-dom';
 
-function Header(){
-  
+function Header(props){
   //Khai báo các biến cần dùng
   const dispatch = useDispatch()
   const showForm = useSelector(state => state.showForm)
@@ -315,7 +315,9 @@ function Header(){
        <div className='header__bottom grid wide'>
         <div className='row container'>
           <div className='col l-2 m-0 c-0'>
-            <img src={icon} className="logo"/>
+            <Link to='/'> 
+              <img src={icon} className="logo"/>
+            </Link>       
           </div>
           <div className='col l-6 m-8 c-8'>
             <div className='search'>
@@ -392,29 +394,41 @@ function Header(){
 
             {/* Nav PC*/}
             <div className='row header__navbar--list nav--pc'>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='trangchu'})}
-                    onClick={()=> dispatch({"type":"tabtrangchu"})}>
-                <p>Trang chủ</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeTrangChu})}
+                    >
+                  <Link to="/">
+                    <div className='link'><p>Trang chủ</p></div>
+                  </Link>
               </div>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='sachgiay'})}
-                    onClick={()=> dispatch({"type":"tabsachgiay"})}>
-                <p>Sách giấy</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeSachGiay})}
+                    >
+                  <Link to="/sachgiay">
+                    <div className='link'><p>Sách giấy</p></div>
+                  </Link>
               </div>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='sachdientu'})}
-                  onClick={()=> dispatch({"type":"tabsachdientu"})}>
-                <p>Sách điện tử</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeSachDienTu})}
+                  >
+                  <Link to="/sachdientu">
+                    <div className='link'><p>Sách điện tử</p></div>
+                  </Link>
               </div>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='audiobook'})}
-                    onClick={()=> dispatch({"type":"tabaudiobook"})}>
-                <p>Audio Book</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeAudioBook})}
+                   >
+                  <Link to="/audiobook">
+                    <div className='link'><p>Audio Book</p></div>
+                  </Link>
               </div>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='videobook'})}
-                   onClick={()=> dispatch({"type":"tabvideobook"})}>
-                <p>Video Book</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeVideoBook})}
+                   >
+                  <Link to="/videobook">
+                    <div className='link'><p>Video Book</p></div>
+                  </Link>
               </div>
-              <div className={classNames('col l-2 m-2 navbar',{'active': tabs==='thuvien'})}
-                  onClick={()=> dispatch({"type":"tabthuvien"})}>
-                <p>Thư viện</p>
+              <div className={classNames('col l-2 m-2 navbar',{'active': props.activeThuVien})}
+                   >
+                  <Link to="/thuvien">
+                    <div className='link'><p>Thư viện</p></div>
+                  </Link>
               </div>
             </div>
 

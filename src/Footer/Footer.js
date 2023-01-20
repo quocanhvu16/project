@@ -1,5 +1,6 @@
 import './Footer.scss';
 import icon from '../assets/img/icon.jpg'
+import { memo } from 'react';
 
 function Footer(){
   return (
@@ -115,4 +116,4 @@ function Footer(){
   );
 }
 
-export default Footer;
+export default memo(Footer);
