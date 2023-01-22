@@ -12,24 +12,58 @@
             "description":"Nội dung của cuốn sách đắc nhân tâm chủ yếu hướng đến nghệ thuật ứng xử cơ bản trong giao tiếp hàng ngày, cách tạo thiện cảm tìm kiếm sự yêu mến chân thật của người đối diện. Và hướng đến giá trị cốt lõi chính là “hiểu mình, hiểu người” và từ đó tạo ra một cuộc sống tốt đẹp, nhẹ nhàng.",
             "comment":[
                 {
+                    "id":1,
                     "name": "anh1",
                     "content": "Hay",
                     "rating":5
                 },
                 {
+                    "id":2,
                     "name": "anh12",
                     "content": "Hay",
                     "rating":4
                 },
                 {
+                    "id":3,
                     "name": "anh123",
                     "content": "Hay",
                     "rating":1
                 },
                 {
+                    "id":4,
                     "name": "anh123",
                     "content": "Hay",
                     "rating":1
+                },
+                {
+                    "id":5,
+                    "name": "anh123",
+                    "content": "Hay",
+                    "rating":1
+                },
+                {
+                    "id":6,
+                    "name": "anh123",
+                    "content": "Hay",
+                    "rating":1
+                },
+                {
+                    "id":7,
+                    "name": "anh123",
+                    "content": "Hay",
+                    "rating":1
+                },
+                {
+                    "id":8,
+                    "name": "anh123",
+                    "content": "Hay",
+                    "rating":1
+                },
+                {
+                    "id":9,
+                    "name": "anh123",
+                    "content": "Hay",
+                    "rating":4
                 }
             ]
         },

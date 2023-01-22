@@ -107,13 +107,21 @@ function Header(props){
     setNameErr(isValidName(name)===0 ? "" : "Tên không được chứa chữ số" )
     // console.log(isValidName(name))
     if(isValidName(name)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
-      alert("ABC")
-
+      const app = document.querySelector(".App")
+      const loading = document.createElement('div')
+      // loading.classList.add("loadingBx")
+      loading.classList.add("frostApp")
+      loading.style.zIndex= 5
+      loading.innerHTML=`<div class="loadingBx">
+                          <div class="loading"></div>
+                        </div>`
+      app.appendChild(loading)  
       //Gọi API đăng ký ở đây
       setTimeout(()=>{
         setUp()
-        clickLogInTab() 
-      },1000)
+        clickLogInTab()
+        app.removeChild(loading) 
+      },2000)
     }
   }
 
@@ -139,9 +147,9 @@ function Header(props){
     },500)
     a.style.animation= "scrollLeft 0.5s linear forwards"
   }
+
   return (
     <div>
-
 
       {/*Khi tab đăng ký hiện lến sẽ làm mờ khung web */}
       {(showForm === true ||showNavbarList===true) &&

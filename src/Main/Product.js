@@ -4,10 +4,21 @@ import classNames from 'classnames';
 import { useSelector,useDispatch } from "react-redux";
 
 function Product(props){
+    const productId= props.productId
+    const [comment, setComment] = useState(0)
+    useLayoutEffect(()=> {
+        async function fetchHomeList (){
+            const requestUrl = `http://localhost:3000/book/${productId}`
+            const response = await fetch(requestUrl)
+            const responseJson = await response.json()
+            setProduct(responseJson)
+        }
+        fetchHomeList()
+    }, [comment])
+    const [product, setProduct]= useState([])
     const dispatch = useDispatch()
     const checkLogin = useSelector(state => state.checkLogIn)
     const showForm = useSelector(state => state.showForm)
-    const product = props.product
     const [amount,setAmount]= useState(1)
     const [numberRating , setNumberRating] = useState(0)
     const [starPercent, setStarPercent] = useState(0)
@@ -16,7 +27,6 @@ function Product(props){
     const [percentRating3, setPercenRating3] = useState(0)
     const [percentRating4, setPercenRating4] = useState(0)
     const [percentRating5, setPercenRating5] = useState(0)
-
     const decAmount=()=>{
         if(amount>1){
             setAmount(amount-1)
@@ -31,41 +41,42 @@ function Product(props){
         let rating2=0
         let rating3=0
         let rating4=0
-        let rating5=0
+        let rating5=0 
         for(let index in product?.comment){
-            totalRating += product?.comment[index]?.rating
-            if(product?.comment[index]?.rating===1){
+            const ratingComment = product?.comment[index]?.rating
+            totalRating += ratingComment
+            if(ratingComment===1){
                 rating1++
             }
-            if(product?.comment[index]?.rating===2){
+            if(ratingComment===2){
                 rating2++
             }
-            if(product?.comment[index]?.rating===3){
+            if(ratingComment===3){
                 rating3++
             }
-            if(product?.comment[index]?.rating===4){
+            if(ratingComment===4){
                 rating4++
             }
-            if(product?.comment[index]?.rating===5){
+            if(ratingComment===5){
                 rating5++
             }
         }
         let rating = Math.round((totalRating /(product?.comment?.length))*10)/10
         setNumberRating(rating)
 
-        const percenRating1Temp = (Math.round((rating1 /(product?.comment?.length))*100)/100)*100
+        const percenRating1Temp = Math.round((Math.round((rating1 /(product?.comment?.length))*100)/100)*100)
         setPercenRating1(percenRating1Temp)
 
-        const percenRating2Temp = (Math.round((rating2 /(product?.comment?.length))*100)/100)*100
+        const percenRating2Temp = Math.round((Math.round((rating2 /(product?.comment?.length))*100)/100)*100)
         setPercenRating2(percenRating2Temp)
 
-        const percenRating3Temp = (Math.round((rating3 /(product?.comment?.length))*100)/100)*100
+        const percenRating3Temp = Math.round((Math.round((rating3 /(product?.comment?.length))*100)/100)*100)
         setPercenRating3(percenRating3Temp)
 
-        const percenRating4Temp = (Math.round((rating4 /(product?.comment?.length))*100)/100)*100
+        const percenRating4Temp = Math.round((Math.round((rating4 /(product?.comment?.length))*100)/100)*100)
         setPercenRating4(percenRating4Temp)
 
-        const percenRating5Temp = (Math.round((rating5 /(product?.comment?.length))*100)/100)*100
+        const percenRating5Temp = Math.round((Math.round((rating5 /(product?.comment?.length))*100)/100)*100)
         setPercenRating5(percenRating5Temp)
 
         const starPercentage = Math.round((rating/5)*100);
@@ -82,16 +93,16 @@ function Product(props){
         document.getElementById("rating3").style.width = `${percenRating3Temp}%`
         document.getElementById("rating4").style.width = `${percenRating4Temp}%`
         document.getElementById("rating5").style.width = `${percenRating5Temp}%`
-
     },[product?.comment])
-
     const clickSignIn =()=>{
         dispatch({"type":"setShowForm"})
     }
     const clickSignUp =()=>{
         dispatch({"type":"setShowForm"})
     }
-
+    const clickButton = () =>{
+        setComment(comment+1)
+    }
     return(
         <div>
             <div className="grid wide container-product">    
@@ -212,11 +223,59 @@ function Product(props){
                         </div>
                     </div>
 
-                    <div className="col l-6 comment">
+                    <div className="col l-6 button-comment">
                         {checkLogin===false && 
                             <p>Chỉ có thành viên mới có thể viết nhận xét.Vui lòng <span onClick={clickSignIn}>đăng nhập</span> hoặc <span onClick={clickSignUp}>đăng ký</span>.</p>
                         }
+                        {checkLogin===true &&
+                            <div onClick={clickButton}>
+                                <button>
+                                    <div>
+                                        <i className="fa-solid fa-pen"></i>
+                                        <p>Viết đánh giá</p>
+                                    </div>
+                                </button>
+                            </div> 
+
+                        }
                     </div>
+                </div>
+
+                <div className="row title-comment">
+                    <div className="col l-12">
+                        <h1 style={{paddingLeft:'12px',marginBottom:'20px'}}>Đánh giá<span>({product.comment?.length})</span></h1>                     
+                    </div>
+                </div>
+                <div className="container-comment">
+                    {product.comment?.length ===0 && 
+                        <h1 style={{paddingLeft:'12px', color:'red'}}>Chưa có đánh giá nào</h1>
+                    }
+                    {product.comment?.map((comment,index)=>{
+                        return(
+                            <div key={index}  >
+                                <div className="row comment">
+                                    <div className="col l-2 name">
+                                        {comment.name}
+                                    </div>
+                                    <div className="col l-10 content">
+                                        <div className="row">
+                                            <div className="stars-outer">
+                                                <div className="stars-inner" style={{width:`${comment.rating*20}%`}}></div>
+                                            </div>
+                                        </div>
+                                        <div className="row" style={{marginTop:'15px'}}>
+                                            <p>
+                                                {comment.content}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row" style={{height:'2px',width:'70%',backgroundColor:'rgb(204,204,204)',margin:'0 auto',marginBottom:'20px'}}>
+
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         </div>

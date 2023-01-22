@@ -14,6 +14,7 @@ import showForm from "./showForm";
 import checkLogIn from "./checkLogin";
 import setTab from "./tab";
 import getProduct from "./getProduct";
+import authSlice from "./authSlice";
 
 const persistConfig = {
     key: 'root',
@@ -25,7 +26,8 @@ const reducer =combineReducers({
     "showForm":showForm,
     "checkLogIn":checkLogIn,
     "setTab": setTab,
-    "getProduct": getProduct
+    "getProduct": getProduct,
+    "auth" : authSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);
