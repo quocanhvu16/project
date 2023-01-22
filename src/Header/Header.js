@@ -26,6 +26,7 @@ function Header(props){
   const [passErr, setPassErr] = useState("")
   const [checked, setChecked] = useState(false)
   const [showNavbarList, setShowNavbarList] = useState(false)
+  const [showToast ,setShowToast] = useState(false)
   //Bật tắt button
   useEffect(()=>{
     if(name !== "" && user !== "" && pass !== "" && checked === true){
@@ -109,7 +110,6 @@ function Header(props){
     if(isValidName(name)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
       const app = document.querySelector(".App")
       const loading = document.createElement('div')
-      // loading.classList.add("loadingBx")
       loading.classList.add("frostApp")
       loading.style.zIndex= 5
       loading.innerHTML=`<div class="loadingBx">
@@ -120,16 +120,51 @@ function Header(props){
       setTimeout(()=>{
         setUp()
         clickLogInTab()
-        app.removeChild(loading) 
+        app.removeChild(loading)
+        setShowToast(true)
+        setTimeout(()=>{
+          setShowToast(false)
+        },4000)
       },2000)
     }
   }
 
+  const clickClose=(e)=>{
+    // console.log(e.target.closet('.toast-close'));
+    if(e.target.closest('.toast-close')){
+      let a = document.querySelector('.toast')
+      // setShowToast(false)
+      a.style.animation = 'slideInRight ease 1s forwards'
+      setTimeout(()=>{
+        setShowToast(false)
+      },1000)
+    }
+    // let a = document.querySelector('.toast-close')
+    // a.style.animation = 'slideInRight ease 1s'
+    // setTimeout(()=>{
+    //   setShowToast(false)
+    // },1000)
+  }
+
   const handleLogIn = () => {
-    alert("ABC")
-    dispatch({"type":"login"})
-    hiddenForm()
-    setUp()
+    const app = document.querySelector(".App")
+    const loading = document.createElement('div')
+    loading.classList.add("frostApp")
+    loading.style.zIndex= 5
+    loading.innerHTML=`<div class="loadingBx">
+                        <div class="loading"></div>
+                      </div>`
+    app.appendChild(loading) 
+    setTimeout(()=>{
+      setUp()
+      app.removeChild(loading)
+      setShowToast(true)
+      dispatch({"type":"login"})
+      hiddenForm()
+      setTimeout(()=>{
+        setShowToast(false)
+      },4000)
+    },2000) 
   }
 
   const handleShowNavbarList = () => {
@@ -150,7 +185,20 @@ function Header(props){
 
   return (
     <div>
-
+      {showToast === true &&
+        <div className='toast' onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+          <i className="fa-solid fa-circle-check"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>SUCCESS</h3>
+          <p className='toast-msg'>Đăng kí thành công</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
       {/*Khi tab đăng ký hiện lến sẽ làm mờ khung web */}
       {(showForm === true ||showNavbarList===true) &&
         <div 
@@ -158,9 +206,6 @@ function Header(props){
           onClick={hiddenForm}>
         </div>
       }
-
-
-
       {/*Tab đăng ký đăng nhập */}
       {showForm === true && 
           <div 
