@@ -1,0 +1,22 @@
+.cart{
+    background-color: #f0f0f0;
+    .title{
+        margin-top: 15px;
+        margin-bottom: 10px;
+        display: inline-flex;
+        // background-color: #f0f0f0;
+        h1{
+            span{
+                font-size: 17px;
+            }
+        }
+    }
+
+    .trash{
+        &:hover{
+            i{
+                color: red;
+            }
+        }
+    }
+}

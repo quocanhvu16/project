@@ -5,7 +5,9 @@ import { useSelector,useDispatch } from "react-redux";
 
 function Product(props){
     const productId= props.productId
+    const usedispatch = useDispatch()
     const [comment, setComment] = useState(0)
+    const [cart, setCart] = useState([])
     useLayoutEffect(()=> {
         async function fetchHomeList (){
             const requestUrl = `http://localhost:3000/book/${productId}`
@@ -103,6 +105,16 @@ function Product(props){
     const clickButton = () =>{
         setComment(comment+1)
     }
+    const handleCart = () => {
+        const data =  {
+            image: product.image,
+            name: product.name,
+            cost: product.cost,
+            amount: amount
+        }
+        usedispatch({"type":"addProduct","payload":data})
+    }
+    console.log(cart);
     return(
         <div>
             <div className="grid wide container-product">    
@@ -120,7 +132,7 @@ function Product(props){
                             </div>
                         </div>
                         <div className="row">
-                            <button>
+                            <button onClick={()=>handleCart("123")}>
                                 <i className="fa-solid fa-cart-shopping"></i>
                                 <p>Thêm vào giỏ hàng</p>
                             </button>
@@ -151,7 +163,7 @@ function Product(props){
                             <p>{product?.comment?.length === undefined ? "(0 đánh giá)" : `(${product.comment.length} đánh giá)` }  </p>
                         </div>
                         <div className="row cost">
-                            <p>{product.cost}</p>
+                            <p>{product.cost}đ</p>
                         </div>
                         <div className="row amount">
                             <p>Số lượng :</p>

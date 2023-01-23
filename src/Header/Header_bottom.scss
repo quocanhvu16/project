@@ -152,6 +152,38 @@
                             display: flex;
                         }
                     } 
+
+                    .navbar__item--hover.navbar-login{
+                        box-shadow: 0 2px 5px rgb(114, 110, 110);
+                        div{
+                            display: flex;
+                            align-items: center;
+                            position: relative;
+                            padding-left: 10px;
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            i{
+                                color: rgb(0,0,0);
+                                padding: 0;
+                                min-width: 26px;
+                            }
+                            i.fa-chevron-right{
+                                position: absolute;
+                                right: 10px;
+                                min-width: none;
+                            }
+                            p{
+                                color: rgb(0,0,0);
+                                font-size: 15px;
+                                padding: 0;
+                                margin-left: 15px;
+                            }
+
+                            &:hover{
+                                background-color: #f0f0f0;
+                            }
+                        }
+                    }
                 }
             }
         }

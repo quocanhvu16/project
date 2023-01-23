@@ -15,6 +15,9 @@ import checkLogIn from "./checkLogin";
 import setTab from "./tab";
 import getProduct from "./getProduct";
 import authSlice from "./authSlice";
+import cart from "./cart";
+import setInfor from "./infor";
+// import getInfor from "./user";
 
 const persistConfig = {
     key: 'root',
@@ -27,7 +30,10 @@ const reducer =combineReducers({
     "checkLogIn":checkLogIn,
     "setTab": setTab,
     "getProduct": getProduct,
-    "auth" : authSlice
+    "auth" : authSlice,
+    "cart" : cart,
+    // "getInfor": getInfor
+    "setInfor": setInfor
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);

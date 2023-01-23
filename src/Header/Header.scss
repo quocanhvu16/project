@@ -104,10 +104,10 @@
     z-index: 3;
     align-items: center;
     padding: 15px 20px;
-    border-left: 4px solid #47d864;
     box-shadow: 0 5px 8px rgba(0,0,0,0.08);
     animation: slideInLeft ease 1s , fadeOut linear 1s 3s forwards;
     transition: all linear 0.3s;
+    border-left: 5px solid;
 
     @keyframes slideInLeft {
         0%{
@@ -133,7 +133,6 @@
     .toast-icon{
         padding-right: 20px;
         font-size: 20px;
-        color: #47d864;
     }
 
     .toast-body{
@@ -153,3 +152,16 @@
     }
 }
 
+.toast-signup{
+    border-left-color: rgb(48,136,152);
+    .toast-icon{
+        color: rgb(48,136,152);
+    }
+}
+
+.toast-login{
+    border-left-color:#47d864;
+    .toast-icon{
+        color: #47d864;
+    }
+}

@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import banner from '../assets/img/banner2.jpg'
 import icon from '../assets/img/icon.jpg'
 import {isValidName,isValidUser,isValidPass} from './Validation'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header(props){
   //Khai báo các biến cần dùng
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
   const tabs = useSelector(state => state.setTab)
@@ -26,7 +27,9 @@ function Header(props){
   const [passErr, setPassErr] = useState("")
   const [checked, setChecked] = useState(false)
   const [showNavbarList, setShowNavbarList] = useState(false)
-  const [showToast ,setShowToast] = useState(false)
+  const [showToastSignUp ,setShowToastSignUp] = useState(false)
+  const [showToastLogIn ,setShowToastLogIn] = useState(false)
+  const [showToastLogOut ,setShowToastLogOut] = useState(false)
   //Bật tắt button
   useEffect(()=>{
     if(name !== "" && user !== "" && pass !== "" && checked === true){
@@ -106,7 +109,6 @@ function Header(props){
 
   const handleSignUp = () => {
     setNameErr(isValidName(name)===0 ? "" : "Tên không được chứa chữ số" )
-    // console.log(isValidName(name))
     if(isValidName(name)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
       const app = document.querySelector(".App")
       const loading = document.createElement('div')
@@ -121,32 +123,15 @@ function Header(props){
         setUp()
         clickLogInTab()
         app.removeChild(loading)
-        setShowToast(true)
+        setShowToastSignUp(true)
         setTimeout(()=>{
-          setShowToast(false)
+          setShowToastSignUp(false)
         },4000)
       },2000)
     }
   }
 
-  const clickClose=(e)=>{
-    // console.log(e.target.closet('.toast-close'));
-    if(e.target.closest('.toast-close')){
-      let a = document.querySelector('.toast')
-      // setShowToast(false)
-      a.style.animation = 'slideInRight ease 1s forwards'
-      setTimeout(()=>{
-        setShowToast(false)
-      },1000)
-    }
-    // let a = document.querySelector('.toast-close')
-    // a.style.animation = 'slideInRight ease 1s'
-    // setTimeout(()=>{
-    //   setShowToast(false)
-    // },1000)
-  }
-
-  const handleLogIn = () => {
+  const handleLogOut=()=> {
     const app = document.querySelector(".App")
     const loading = document.createElement('div')
     loading.classList.add("frostApp")
@@ -156,13 +141,64 @@ function Header(props){
                       </div>`
     app.appendChild(loading) 
     setTimeout(()=>{
+      app.removeChild(loading)
+      setShowToastLogOut(true)
+      dispatch({"type":"logout"})
+      setTimeout(()=>{
+        setShowToastLogOut(false)
+        navigate('/')
+      },4000)
+    },2000) 
+  }
+
+  const clickClose=(e)=>{
+    if(e.target.closest('.toast-close')){
+      let a = document.querySelector('.toast')
+      a.style.animation = 'slideInRight ease 1s forwards'
+      setTimeout(()=>{
+        setShowToastSignUp(false)
+      },1000)
+    }
+  }
+  function clickCart(){
+    const app = document.querySelector(".App")
+    const loading = document.createElement('div')
+    loading.classList.add("frostApp")
+    loading.style.zIndex= 5
+    loading.innerHTML=`<div class="loadingBx">
+                        <div class="loading"></div>
+                      </div>`
+    app.appendChild(loading)
+    setTimeout(()=>{
+      app.removeChild(loading)
+      navigate('/cart')
+    },500)
+  }
+  async function fetchUser (){
+    const requestUrl = "http://localhost:3000/user/2"
+    const response = await fetch(requestUrl)
+    const responseJson = await response.json()
+    dispatch({'type':'setInfor',"payload":responseJson})
+    dispatch({"type":"initProduct","payload":responseJson.information.cart})
+  }
+  const handleLogIn = () => {
+    const app = document.querySelector(".App")
+    const loading = document.createElement('div')
+    loading.classList.add("frostApp")
+    loading.style.zIndex= 5
+    loading.innerHTML=`<div class="loadingBx">
+                        <div class="loading"></div>
+                      </div>`
+    app.appendChild(loading)
+    setTimeout(()=>{
       setUp()
       app.removeChild(loading)
-      setShowToast(true)
+      setShowToastLogIn(true)
       dispatch({"type":"login"})
       hiddenForm()
+      fetchUser()
       setTimeout(()=>{
-        setShowToast(false)
+        setShowToastLogIn(false)
       },4000)
     },2000) 
   }
@@ -185,14 +221,44 @@ function Header(props){
 
   return (
     <div>
-      {showToast === true &&
-        <div className='toast' onClick={(e)=>clickClose(e)}>
+      {showToastSignUp === true &&
+      <div className='toast toast-signup'
+            onClick={(e)=>clickClose(e)}>
         <div className='toast-icon'>
           <i className="fa-solid fa-circle-check"></i>
         </div>
         <div className='toast-body'>
           <h3 className='toast-title'>SUCCESS</h3>
           <p className='toast-msg'>Đăng kí thành công</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
+
+      {showToastLogIn===true &&
+      <div className='toast toast-login' onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+          <i className="fa-solid fa-circle-check"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>SUCCESS</h3>
+          <p className='toast-msg'>Đăng nhập thành công</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
+      {showToastLogOut===true &&
+      <div className='toast toast-login' onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+          <i className="fa-solid fa-circle-check"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>SUCCESS</h3>
+          <p className='toast-msg'>Đăng xuất thành công. Chuyển hướng bạn về trang chủ.</p>
         </div>
         <div className='toast-close'>
           <i className="fa-solid fa-xmark"></i>
@@ -412,7 +478,7 @@ function Header(props){
                   </div>
                 </div>
               </div>
-              <div className='col l-4 m-6 c-6'>
+              <div className='col l-4 m-6 c-6' onClick={clickCart}>
                 <div className="navbar__item">
                   <i className="fa-solid fa-cart-shopping"></i>
                   <p>Giỏ Hàng</p>
@@ -422,18 +488,43 @@ function Header(props){
                 <div className="navbar__item">
                   <i className="fa-solid fa-user"></i>
                   <p>Tài khoản</p>
-                  <div className="navbar__item--hover">
-                    <button className='btn__signIn'
-                            onClick={clickLogInBtn}
-                    >
-                      Đăng nhập
-                    </button>
-                    <button className='btn__signUp'
-                            onClick={clickSignUpBtn}
-                    >
-                      Đăng ký
-                    </button>
-                  </div>
+                  {checkLogin===false ? 
+                    <div className="navbar__item--hover">
+                      <button className='btn__signIn'
+                              onClick={clickLogInBtn}
+                      >
+                        Đăng nhập
+                      </button>
+                      <button className='btn__signUp'
+                              onClick={clickSignUpBtn}
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                    :
+                    <div className="navbar__item--hover navbar-login">
+                      <div>
+                        <i className="fa-solid fa-user" style={{fontSize:'40px'}}></i>
+                        <p style={{alignSelf:'flex-end'}}>Tài khoản của tôi</p>
+                        <i className="fa-solid fa-chevron-right"></i>
+                      </div>
+                      <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'1px',padding:0}}/>
+                      <div>
+                        <i className="fa-solid fa-receipt"></i>
+                        <p>Đơn hàng của tôi</p>
+                      </div>
+                      <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'1px',padding:0}}/>
+                      <div>
+                        <i className="fa-solid fa-wallet"></i>
+                        <p>Ví tiền của tôi</p>
+                      </div>
+                      <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'1px',padding:0}}/>
+                      <div onClick={handleLogOut}>
+                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                        <p>Thoát tài khoản</p>
+                      </div>
+                    </div>
+                  }
                 </div>
               </div>
             </div>

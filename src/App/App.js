@@ -12,6 +12,7 @@ import VideoBookPage from '../Pages/VideoBookPage';
 import ThuvienPage from '../Pages/ThuVienPage';
 import ProductPage from '../Pages/ProductPage';
 import { useSelector } from 'react-redux';
+import CartPage from '../Pages/CartPage';
 
 function App(){
   const [datas, setDatas]= useState([])
@@ -49,6 +50,7 @@ function App(){
         <Route path={`/${product?.name}`} element={<ProductPage product={product}/>} />
         {/* <Route path={`/123`} element={<ProducePage data={temp} />} /> */}
         <Route path="*" element={<p>Path not resolved</p>} />
+        <Route path="/cart" element={<CartPage />}/>
       </Routes>
     </div>
   );

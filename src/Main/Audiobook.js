@@ -27,7 +27,7 @@ function Audiobook (props) {
                                 >
                                     <img src={data.image}/>
                                     <h1>{data.name}</h1>
-                                    <h3>{data.cost}</h3>
+                                    <h3>{data.cost}đ</h3>
                                     <div className='sale'>
                                         <p>Đã bán {data.sale}</p>
                                     </div>
