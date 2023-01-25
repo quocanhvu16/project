@@ -3,6 +3,7 @@ import logo1 from '../assets/img/logo1.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 
 function Sachdientu (props) {
+    document.title= "Sách điện tử"
     const dispatch = useDispatch()
     const sachdientu = props.sachdientu
     return(
@@ -21,7 +22,7 @@ function Sachdientu (props) {
                         {sachdientu.map((data) => {
                         return(
                         <div className='col l-3 m-4 c-6' key={data.id}>
-                            <Link to={`/${data.name}`}>
+                            <Link to={`/${data.type}/${data.name}`}>
                                 <div className='item'
                                 onClick={()=> dispatch({"type":"get","payload":data})}
                                 >

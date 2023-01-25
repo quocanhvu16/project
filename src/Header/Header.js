@@ -15,7 +15,6 @@ function Header(props){
   const navigate = useNavigate()
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
-  const tabs = useSelector(state => state.setTab)
   const [tabLogIn,setTabLogIn]=useState(true)
   const [tabSignUp,setTabSignUp]=useState(false)
   const [showPass, setShowPass] = useState(false)
@@ -140,10 +139,16 @@ function Header(props){
                         <div class="loading"></div>
                       </div>`
     app.appendChild(loading) 
+    dispatch({"type":"logout"})
+    dispatch({'type':'setInfor','payload':[]})
+    dispatch({'type':'initProduct','payload':[]})
+    dispatch({'type':'get','payload':[]})
+    dispatch({'type':'initBill','payload':[]})
+    dispatch({'type':'initLibrary','payload':[]})
+    dispatch({'type':'initCoin','payload':0})
     setTimeout(()=>{
       app.removeChild(loading)
       setShowToastLogOut(true)
-      dispatch({"type":"logout"})
       setTimeout(()=>{
         setShowToastLogOut(false)
         navigate('/')
@@ -180,6 +185,9 @@ function Header(props){
     const responseJson = await response.json()
     dispatch({'type':'setInfor',"payload":responseJson})
     dispatch({"type":"initProduct","payload":responseJson.information.cart})
+    dispatch({"type":"initBill","payload":responseJson.information.bill})
+    dispatch({"type":"initLibrary","payload":responseJson.information.library})
+    dispatch({'type':'initCoin','payload':responseJson.information.coin})
   }
   const handleLogIn = () => {
     const app = document.querySelector(".App")

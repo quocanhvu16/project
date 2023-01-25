@@ -1,7 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
-import { useSelector } from "react-redux";
-
-
 /* eslint-disable default-case */
 const cart = (state=[],action)=> {
     switch(action.type){

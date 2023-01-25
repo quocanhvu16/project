@@ -18,6 +18,7 @@ function Product(props){
         fetchHomeList()
     }, [comment])
     const [product, setProduct]= useState([])
+    document.title= `${product.name}`
     const dispatch = useDispatch()
     const checkLogin = useSelector(state => state.checkLogIn)
     const showForm = useSelector(state => state.showForm)
@@ -107,14 +108,12 @@ function Product(props){
     }
     const handleCart = () => {
         const data =  {
-            image: product.image,
-            name: product.name,
-            cost: product.cost,
-            amount: amount
+            ...product,
+            amount:amount,
+            total: amount*(Number(product.cost.replace('.','')))
         }
         usedispatch({"type":"addProduct","payload":data})
     }
-    console.log(cart);
     return(
         <div>
             <div className="grid wide container-product">    

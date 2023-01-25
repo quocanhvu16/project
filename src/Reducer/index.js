@@ -12,31 +12,33 @@ import {
 
 import showForm from "./showForm";
 import checkLogIn from "./checkLogin";
-import setTab from "./tab";
 import getProduct from "./getProduct";
 import authSlice from "./authSlice";
 import cart from "./cart";
 import setInfor from "./infor";
-// import getInfor from "./user";
+import RootReducer from "./rootReducer";
+import bill from "./bill";
+import library from "./library";
+import coin from "./coin";
 
 const persistConfig = {
     key: 'root',
     storage
 }
-
-
-const reducer =combineReducers({
+export const appReducer =combineReducers({
     "showForm":showForm,
     "checkLogIn":checkLogIn,
-    "setTab": setTab,
+    // "setTab": setTab,
     "getProduct": getProduct,
     "auth" : authSlice,
     "cart" : cart,
-    // "getInfor": getInfor
-    "setInfor": setInfor
+    "setInfor": setInfor,
+    "bill": bill,
+    "library":library,
+    "coin":coin,
 })
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const store = configureStore({
     reducer : persistedReducer,
