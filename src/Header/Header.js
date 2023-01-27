@@ -140,18 +140,18 @@ function Header(props){
                       </div>`
     app.appendChild(loading) 
     dispatch({"type":"logout"})
-    dispatch({'type':'setInfor','payload':[]})
-    dispatch({'type':'initProduct','payload':[]})
-    dispatch({'type':'get','payload':[]})
-    dispatch({'type':'initBill','payload':[]})
-    dispatch({'type':'initLibrary','payload':[]})
-    dispatch({'type':'initCoin','payload':0})
     setTimeout(()=>{
       app.removeChild(loading)
       setShowToastLogOut(true)
       setTimeout(()=>{
         setShowToastLogOut(false)
         navigate('/')
+        dispatch({'type':'setInfor','payload':[]})
+        dispatch({'type':'initProduct','payload':[]})
+        dispatch({'type':'get','payload':[]})
+        dispatch({'type':'initBill','payload':[]})
+        dispatch({'type':'initLibrary','payload':[]})
+        dispatch({'type':'initCoin','payload':0})
       },4000)
     },2000) 
   }
@@ -469,20 +469,30 @@ function Header(props){
                       <i className="fa-solid fa-bell"></i>
                       <p>Thông báo</p>
                     </div> 
-                    <div className='hover__container'>
-                      <img src='https://vi.seaicons.com/wp-content/uploads/2016/08/Very-Basic-Lock-icon-1.png'/>
-                      <p>Vui lòng đăng nhập để xem thông báo</p>
+                    {checkLogin===false ?
+                    <div>
+                      <div className='hover__container'>
+                        <img src='https://vi.seaicons.com/wp-content/uploads/2016/08/Very-Basic-Lock-icon-1.png'/>
+                        <p>Vui lòng đăng nhập để xem thông báo</p>
+                      </div>
+                      <button className='btn__signIn'
+                              onClick={clickLogInBtn}
+                      >
+                        Đăng nhập
+                      </button>
+                      <button className='btn__signUp'
+                              onClick={clickSignUpBtn}
+                      >
+                        Đăng ký
+                      </button>
                     </div>
-                    <button className='btn__signIn'
-                            onClick={clickLogInBtn}
-                    >
-                      Đăng nhập
-                    </button>
-                    <button className='btn__signUp'
-                            onClick={clickSignUpBtn}
-                    >
-                      Đăng ký
-                    </button>
+                    :
+                    <div>
+                      <div className='hover__container'>
+                        <p>Chưa có thông báo gì</p>
+                      </div>
+                    </div>
+                    }
                   </div>
                 </div>
               </div>

@@ -22,7 +22,7 @@ function Sachdientu (props) {
                         {sachdientu.map((data) => {
                         return(
                         <div className='col l-3 m-4 c-6' key={data.id}>
-                            <Link to={`/${data.type}/${data.name}`}>
+                            <Link to={`/${data.type}-${data.name}`}>
                                 <div className='item'
                                 onClick={()=> dispatch({"type":"get","payload":data})}
                                 >

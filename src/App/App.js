@@ -41,16 +41,16 @@ function App(){
   return (
     <div className="App">
       <Routes>
-        <Route path='/' exact element={<HomePage sachgiay={sachgiay} sachdientu={sachdientu} audiobook={audiobook} videobook={videobook}/>}/>
-        <Route path='/sachgiay' exact element={<SachGiayPage data={sachgiay}/>}/>
-        <Route path='/sachdientu' exact element={<SachDienTuPage data={sachdientu}/> } />
-        <Route path='/audiobook' exact element={<AudioBookPage data={audiobook}/>} />
-        <Route path='/videobook' exact element={<VideoBookPage data={videobook}/>} />
-        <Route path='/thuvien' exact element={<ThuvienPage />} />
-        <Route path={`/${product.type}/${product?.name}`} exact element={<ProductPage product={product}/>} />
+        <Route path='/' element={<HomePage sachgiay={sachgiay} sachdientu={sachdientu} audiobook={audiobook} videobook={videobook}/>}/>
+        <Route path='/sachgiay'  element={<SachGiayPage data={sachgiay}/>}/>
+        <Route path='/sachdientu' element={<SachDienTuPage data={sachdientu}/> } />
+        <Route path='/audiobook' element={<AudioBookPage data={audiobook}/>} />
+        <Route path='/videobook'  element={<VideoBookPage data={videobook}/>} />
+        <Route path='/thuvien' element={<ThuvienPage />} />
+        <Route path={`/${product.type}-${product?.name}`} element={<ProductPage product={product}/>} />
         {/* <Route path={`/123`} element={<ProducePage data={temp} />} /> */}
         <Route path="*" element={<p>Path not resolved</p>} />
-        <Route path="/cart" exact element={<CartPage />}/>
+        <Route path="/cart" element={<CartPage />}/>
       </Routes>
     </div>
   );

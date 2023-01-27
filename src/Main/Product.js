@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { useEffect, useState, useLayoutEffect } from "react";
-import classNames from 'classnames';
 import { useSelector,useDispatch } from "react-redux";
+
 
 function Product(props){
     const productId= props.productId
@@ -103,35 +103,184 @@ function Product(props){
     const clickSignUp =()=>{
         dispatch({"type":"setShowForm"})
     }
+    const [writeComment , setWriteComment] = useState(false)
     const clickButton = () =>{
+        setWriteComment(true)
+    }
+    const closeComment =() => {
+        setWriteComment(false)
+    }
+    const [showToastComment,setShowToastComment] = useState(false)
+    const sendComment = () => {
+        const app = document.querySelector(".App")
+        const loading = document.createElement('div')
+        loading.classList.add("frostApp")
+        loading.style.zIndex= 5
+        loading.innerHTML=`<div class="loadingBx">
+                            <div class="loading"></div>
+                          </div>`
+        app.appendChild(loading)
+        setTimeout(()=>{
+            setWriteComment(false)
+            app.removeChild(loading)
+            setShowToastComment(true)
+            setTimeout(()=>{
+                setShowToastComment(false)
+            },4000)
+        },1500) 
         setComment(comment+1)
     }
     const handleCart = () => {
-        const data =  {
-            ...product,
-            amount:amount,
-            total: amount*(Number(product.cost.replace('.','')))
+        if(checkLogin === true){
+            const app = document.querySelector(".App")
+            const loading = document.createElement('div')
+            loading.classList.add("frostApp")
+            loading.style.zIndex= 5
+            loading.innerHTML=`<div class="loadingBx">
+                                <div class="loading"></div>
+                            </div>`
+            app.appendChild(loading)
+            setTimeout(()=>{
+                app.removeChild(loading)
+                setShowToastCart(true)
+                setTimeout(()=>{
+                    setShowToastCart(false)
+                },4000)
+            },1000) 
+            const data =  {
+                ...product,
+                amount:amount,
+                total: amount*(Number(product.cost.replace('.','')))
+            }
+            usedispatch({"type":"addProduct","payload":data})
         }
-        usedispatch({"type":"addProduct","payload":data})
+        if(checkLogin=== false){
+            dispatch({"type":'setShowForm'})
+        }
     }
+    const [preview,setPreview] = useState({
+        state: false,
+        data : ""
+    })
+    const handleClickPreview = (e)=>{
+        console.log(e);
+        setPreview({
+            ...preview,
+            state:true,
+            data : e
+        })
+    }
+    const closePreview =() =>{
+        setPreview({
+            ...preview,
+            state:false,
+            data : ''
+        })
+    }
+    const clickClose=(e)=>{
+        if(e.target.closest('.toast-close')){
+          let a = document.querySelector('.toast')
+          a.style.animation = 'slideInRight ease 1s forwards'
+          setTimeout(()=>{
+            setShowToastComment(false)
+          },1000)
+        }
+      }
+    const [showToastCart,setShowToastCart] = useState(false)
     return(
-        <div>
-            <div className="grid wide container-product">    
+        <div className="main-product">
+            {preview.state === true && 
+                <div className="click-preview">
+                    <div>
+                        <img className="content" src={`${preview.data}`} />
+                    </div>
+                    <div className="close-preview" onClick={closePreview}>
+                        <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            {writeComment === true &&
+                <div className="write-comment">
+                    <div className="box-comment">
+                        <div className="box-top">
+                            <h1>VIẾT ĐÁNH GIÁ SẢN PHẨM</h1>
+                            <i className="fa-solid fa-xmark" onClick={closeComment}></i>
+                        </div>
+                        <div class="stars">
+                            <form id="form" name="rating" onchange="showValue()">
+                            <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                            <label class="star star-5" for="star-5"></label>
+                            <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                            <label class="star star-4" for="star-4"></label>
+                            <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                            <label class="star star-3" for="star-3"></label>
+                            <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                            <label class="star star-2" for="star-2"></label>
+                            <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                            <label class="star star-1" for="star-1"></label>
+                            </form>
+                        </div>
+                        <div className="box-name">
+                            <input type="text" placeholder="Nhập tên sẽ hiển thị khi đánh giá"/>
+                        </div>
+                        <div className="box-content">
+                            <textarea placeholder="Nhập đánh giá của bạn về sản phẩm"/>
+                        </div>
+                        <div className="box-button">
+                            <button onClick={sendComment}><p>GỬI NHẬN XÉT</p></button>
+                        </div>
+                    </div>
+                </div>
+            }  
+            {showToastComment===true &&
+                <div className='toast toast-login' onClick={(e)=>clickClose(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>SUCCESS</h3>
+                    <p className='toast-msg'>Viết đánh giá thành công</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            {showToastCart===true &&
+                <div className='toast toast-login' onClick={(e)=>clickClose(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>SUCCESS</h3>
+                    <p className='toast-msg'>Thêm vào giỏ hàng thành công</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            <div className="grid wide container-product">  
                 <div className="row product">
                     <div className="col l-5 m-12 c-12 product-image">
                         <div className="row">
                             <div className="col1 col l-3 m-3 c-3">
-                                <img src={`${product.image}`}  
+                                <img src={`${product.image}`}
+                                    onClick={(e)=>handleClickPreview(e.target.src)}  
                                      />
-                                <img src={`${product.image}`}></img>
-                                <img src={`${product.image}`}></img>
+                                <img src={`${product.image}`} 
+                                    onClick={(e)=>handleClickPreview(e.target.src)} 
+                                    />
+                                <img src={`${product.image}`} 
+                                    onClick={(e)=>handleClickPreview(e.target.src)} 
+                                />
                             </div>
                             <div className="col2 col l-9 m-9 c-9">
                                 <img src={`${product.image}`}></img>
                             </div>
                         </div>
                         <div className="row">
-                            <button onClick={()=>handleCart("123")}>
+                            <button onClick={()=>handleCart()}>
                                 <i className="fa-solid fa-cart-shopping"></i>
                                 <p>Thêm vào giỏ hàng</p>
                             </button>

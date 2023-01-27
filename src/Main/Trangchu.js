@@ -23,7 +23,7 @@ function Trangchu (props) {
                         {sachgiay.map((data,index) => {
                         return(
                             <div className='col l-3 m-4 c-6' key={data.id}>
-                                <Link to={`/${data.type}/${data.name}`}>
+                                <Link to={`/${data.type}-${data.name}`}>
                                     <div className='item'
                                     onClick={()=> {
                                         // setDatas(data)
@@ -58,7 +58,7 @@ function Trangchu (props) {
                         {sachdientu.map((data,index) => {
                         return(
                         <div className='col l-3 m-4 c-6' key={data.id}>
-                            <Link to={`/${data.type}/${data.name}`}>
+                            <Link to={`/${data.type}-${data.name}`}>
                                 <div className='item'
                                 onClick={()=> dispatch({"type":"get","payload":data})}
                                 >
@@ -90,7 +90,7 @@ function Trangchu (props) {
                         {audiobook.map((data,index) => {
                         return(
                         <div className='col l-3 m-4 c-6' key={data.id}>
-                            <Link to={`/${data.type}/${data.name}`}>
+                            <Link to={`/${data.type}-${data.name}`}>
                                 <div className='item'
                                 onClick={()=> dispatch({"type":"get","payload":data})}
                                 >
@@ -122,7 +122,7 @@ function Trangchu (props) {
                         {videobook.map((data,index) => {
                         return(
                         <div className='col l-3 m-4 c-6' key={data.id}>
-                            <Link to={`/${data.type}/${data.name}`}>
+                            <Link to={`/${data.type}-${data.name}`}>
                                 <div className='item'
                                 onClick={()=> dispatch({"type":"get","payload":data})}
                                 >

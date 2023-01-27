@@ -6,7 +6,6 @@ function Cart (){
     document.title= "Giỏ hàng"
     const dispatch= useDispatch();
     // const cart = useSelector(state => state.cart)
-    // console.log(cart);
     const [cart ,setCart] = useState([
         {
             id:1,
@@ -37,6 +36,7 @@ function Cart (){
     const [bill, setBill] = useState([])
     const [totalBill ,setTotalBill] = useState(0);
     const [checked , setChecked] = useState([])
+    const [checkedAll, setCheckedAll] = useState(false)
     const clickTrash=(id)=>{
         // dispatch({'type':"removeProduct","payload":index})
         setCart(cart=>{
@@ -58,7 +58,7 @@ function Cart (){
             return newCart
         })
     }
-    const clickCheckbox = (cart,id) => {
+    const clickCheckbox = (cart1,id) => {
         setChecked(prev=>{
             const isChecked = checked.includes(id)
             if(isChecked){
@@ -71,11 +71,19 @@ function Cart (){
                     }
                     return newBill
                 })
-                return checked.filter(item => item !== id)
+                const newChecked = checked.filter(item => item !== id)
+                if(newChecked.length !== cart.length){
+                    setCheckedAll(false)
+                }
+                return newChecked
             }
             else{
-                setBill(prev => [...prev,cart])
-                return  [...prev,id]
+                setBill(prev => [...prev,cart1])
+                const newChecked = [...prev,id]
+                if(newChecked.length === cart.length){
+                    setCheckedAll(true)
+                }
+                return newChecked
             }
         })
     }
@@ -88,8 +96,27 @@ function Cart (){
             return total
         })
     },[bill])
-    console.log("bill",bill);
-    console.log("cart",cart);
+    const clickCheckboxAll =() =>{
+        setCheckedAll(!checkedAll)
+        if(checkedAll === true) {
+            setBill([])
+            setChecked([])
+        }
+    }
+    useLayoutEffect(()=>{
+        if(checkedAll){
+            setChecked(()=>{
+                const newChecked = []
+                for(let i=0 ; i<cart?.length;i++){
+                    newChecked.push(cart[i].id)
+                }
+                return newChecked;
+            })
+            setBill(bill =>{
+                return [...cart]
+            })
+        }
+    },[checkedAll])
     return(
         <div>
             { checkLogin === false 
@@ -116,7 +143,9 @@ function Cart (){
                             <div className="row" style={{padding:'10px 20px'}}>
                                 <div className="col l-1 m-1 c-1" style={{display:'flex',alignItems:'center'}}
                                     >
-                                    <input type="checkbox" style={{width:'20px',height:'20px',cursor:'pointer',display:'flex',alignItems:'center'}} 
+                                    <input type="checkbox" style={{width:'20px',height:'20px',cursor:'pointer',display:'flex',alignItems:'center'}}
+                                    onChange={clickCheckboxAll} 
+                                    checked={checkedAll}
                                     />
                                 </div>
                                 <div className="col l-6 m-6 c-6">
