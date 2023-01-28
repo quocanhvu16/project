@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 function Cart (){
     document.title= "Giỏ hàng"
     const dispatch= useDispatch();
+    const coin = useSelector(state => state.coin)
     // const cart = useSelector(state => state.cart)
+    const [ payErr , setPayErr] = useState("")
     const [cart ,setCart] = useState([
         {
             id:1,
@@ -37,6 +39,10 @@ function Cart (){
     const [totalBill ,setTotalBill] = useState(0);
     const [checked , setChecked] = useState([])
     const [checkedAll, setCheckedAll] = useState(false)
+    const [showToastPaySuccess, setShowToastPaySuccess] = useState(false)
+    const [showToastPayFailed, setShowToastPayFailed] = useState(false)
+    const [showToastCartEmpty, setShowToastCartEmpty] = useState(false)
+    const [coinUser ,setCoinUser] = useState(coin)
     const clickTrash=(id)=>{
         // dispatch({'type':"removeProduct","payload":index})
         setCart(cart=>{
@@ -72,7 +78,7 @@ function Cart (){
                     return newBill
                 })
                 const newChecked = checked.filter(item => item !== id)
-                if(newChecked.length !== cart.length){
+                if(newChecked?.length !== cart?.length){
                     setCheckedAll(false)
                 }
                 return newChecked
@@ -117,17 +123,147 @@ function Cart (){
             })
         }
     },[checkedAll])
+    const clickPay = () => {
+        const app = document.querySelector(".App")
+        const loading = document.createElement('div')
+        loading.classList.add("frostApp")
+        loading.style.zIndex= 5
+        loading.innerHTML=`<div class="loadingBx">
+                            <div class="loading"></div>
+                        </div>`
+        app.appendChild(loading)
+        if(bill?.length === 0 ){
+            setTimeout(()=>{
+                app.removeChild(loading)
+                setShowToastCartEmpty(true)
+                setTimeout(()=>{
+                    setShowToastCartEmpty(false)
+                },4000)
+            },1000) 
+        }
+        if(bill?.length !== 0 && payErr !== ""){
+            setTimeout(()=>{
+                app.removeChild(loading)
+                setShowToastPayFailed(true)
+                setTimeout(()=>{
+                    setShowToastPayFailed(false)
+                },4000)
+            },1000) 
+        }
+        if(bill?.length !== 0 && payErr === ""){
+            setTimeout(()=>{
+                app.removeChild(loading)
+                setShowToastPaySuccess(true)
+                setCart(cart => {
+                    const newCart = [...cart]
+                    checked.sort(function(a, b){return b - a});
+                    for(let i=newCart.length-1; i>=0; i--){
+                        for(let j=checked.length-1; j>= 0; j--){
+                            if(newCart[i].id === checked[j]){
+                                newCart.splice(i,1)
+                            }
+                        }   
+                    }
+                    setBill([])
+                    return newCart
+                })
+                setChecked([])
+                setCoinUser(prev => prev - totalBill)
+                setTimeout(()=>{
+                    setShowToastPaySuccess(false)
+                },4000)
+            },1000) 
+        }
+        
+    }
+    const clickClosePaySuccess=(e)=>{
+        if(e.target.closest('.toast-close')){
+          let a = document.querySelector('.toast')
+          a.style.animation = 'slideInRight ease 1s forwards'
+          setTimeout(()=>{
+            setShowToastPaySuccess(false)
+          },1000)
+        }
+    }
+    const clickClosePayFailed=(e)=>{
+        if(e.target.closest('.toast-close')){
+          let a = document.querySelector('.toast')
+          a.style.animation = 'slideInRight ease 1s forwards'
+          setTimeout(()=>{
+            setShowToastPaySuccess(false)
+          },1000)
+        }
+    }
+    const clickCloseCartEmpty=(e)=>{
+        if(e.target.closest('.toast-close')){
+          let a = document.querySelector('.toast')
+          a.style.animation = 'slideInRight ease 1s forwards'
+          setTimeout(()=>{
+            setShowToastPaySuccess(false)
+          },1000)
+        }
+    }
+    useLayoutEffect(()=>{
+        if((coinUser - totalBill) >= 0){
+            setPayErr("")
+        }
+        if((coinUser - totalBill) < 0){
+            setPayErr("Tiền trong ví không đủ để thực hiện giao dịch này")
+        }
+    },[totalBill])
     return(
         <div>
-            { checkLogin === false 
-            ? 
-                <div className="grid wide" style={{backgroundColor:'#ffffff',marginTop:'20px',borderRadius:'10px'}}>
-                    <div className="row">
-                        <div className="col l-12" style={{minHeight:'200px',textAlign:'center'}}>
-                            <h1 style={{paddingLeft:'15px'}}>Hãy <span style={{color:'blue',cursor:'pointer',fontSize:'25px'}} onClick={()=>dispatch({'type':"setShowForm"})}><i>đăng nhập</i></span> để có thể thêm sản phẩm vào giỏ hàng</h1>
-                        </div>
+            {showToastPaySuccess===true &&
+                <div className='toast toast-login' onClick={(e)=>clickClosePaySuccess(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>SUCCESS</h3>
+                    <p className='toast-msg'>Thanh toán thành công</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
                     </div>
                 </div>
+            }
+            {showToastPayFailed===true &&
+                <div className='toast toast-failed' onClick={(e)=>clickClosePayFailed(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>FAILED</h3>
+                    <p className='toast-msg'>Thanh toán thất bại</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            {showToastCartEmpty===true &&
+                <div className='toast toast-failed' onClick={(e)=>clickCloseCartEmpty(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>FAILED</h3>
+                    <p className='toast-msg'>Chưa chọn sản phẩm để thanh toán</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            { checkLogin === false 
+            ? 
+            <div className="grid wide" style={{backgroundColor:'#ffffff',marginTop:'20px',borderRadius:'10px'}}>
+                <div className="row">
+                    <div className="col l-12" style={{minHeight:'200px',textAlign:'center'}}>
+                        <h1 style={{paddingLeft:'15px'}}>Hãy <span style={{color:'blue',cursor:'pointer',fontSize:'25px'}} onClick={()=>dispatch({'type':"setShowForm"})}><i>đăng nhập</i></span> để có thể thêm sản phẩm vào giỏ hàng</h1>
+                    </div>
+                </div>
+            </div>
             :
             <div className="grid wide cart">
                 <div style={{backgroundColor:'#f0f0f0'}}>
@@ -138,7 +274,7 @@ function Cart (){
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col l-8 m-12 c-12">
+                    <div className="col l-8 m-12 c-12" style={{marginBottom:'15px'}}>
                         <div style={{backgroundColor:'#ffffff',borderRadius:'10px'}}>
                             <div className="row" style={{padding:'10px 20px'}}>
                                 <div className="col l-1 m-1 c-1" style={{display:'flex',alignItems:'center'}}
@@ -202,29 +338,53 @@ function Cart (){
                             })}
                         </div>
                     </div>
-                    <div className="col l-4 m-12 c-12" style={{backgroundColor:'#ffffff',borderRadius:'10px',maxHeight:'200px'}}>
-                        <div className="row" style={{padding:'10px 0px',marginBottom:'10px'}}>
-                            <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
-                                <p style={{fontSize:'17px'}}>Thành tiền</p>
+                    <div className="col l-4 m-12 c-12" style={{}}>
+                        <div style={{backgroundColor:'#ffffff',borderRadius:'10px',minHeight:'200px',padding:'10px 10px'}}>
+                            <div className="row" style={{padding:'10px 0px',marginBottom:'10px'}}>
+                                <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
+                                    <p style={{fontSize:'17px'}}>Thành tiền</p>
+                                </div>
+                                <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
+                                    <p style={{fontSize:'17px'}}>{totalBill}đ</p>
+                                </div>
                             </div>
-                            <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
-                                <p style={{fontSize:'17px'}}>{totalBill}đ</p>
+                            <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'2px',padding:0}}/>
+                            <div className="row" style={{padding:'10px 0px',marginTop:'5px'}}>
+                                <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
+                                    <p style={{fontSize:'17px',fontWeight:'700'}}>Tổng số tiền ( gồm VAT )</p>
+                                </div>
+                                <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
+                                    <p style={{fontSize:'23px',color:'rgb(201,33,39)',fontWeight:'700'}}>{totalBill}đ</p>
+                                </div>
                             </div>
-                        </div>
-                        <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'2px',padding:0}}/>
-                        <div className="row" style={{padding:'10px 0px',marginTop:'5px'}}>
-                            <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
-                                <p style={{fontSize:'17px',fontWeight:'700'}}>Tổng số tiền ( gồm VAT )</p>
+                            <div className="row" style={{padding:'10px 0px',marginTop:'5px'}}>
+                                <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
+                                    <p style={{fontSize:'17px',fontWeight:'700'}}>Số tiền trong ví</p>
+                                </div>
+                                <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
+                                    <p style={{fontSize:'23px',color:'rgb(201,33,39)',fontWeight:'700'}}>{coinUser}đ</p>
+                                </div>
                             </div>
-                            <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
-                                <p style={{fontSize:'23px',color:'rgb(201,33,39)',fontWeight:'700'}}>{totalBill}đ</p>
+                            <div className="row" style={{padding:'10px 0px',marginTop:'5px'}}>
+                                <div className="col l-8 m-8 c-8" style={{display:'flex',alignItems:'center'}}>
+                                    <p style={{fontSize:'17px',fontWeight:'700'}}>Số dư trong ví</p>
+                                </div>
+                                <div className="col l-4 m-4 c-4" style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end'}}>
+                                    <p style={{fontSize:'23px',color:'rgb(201,33,39)',fontWeight:'700'}}>{coinUser - totalBill}đ</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row" style={{marginTop:'25px'}}>
-                            <div className="col l-12 m-12 c-12" style={{display:'flex', justifyContent:'center'}}>
-                                <button style={{padding:'10px 100px',backgroundColor:'rgb(201,33,39)',color:'#ffffff',border:'none',borderRadius:'10px',cursor:'pointer'}}>
-                                    <p style={{fontSize:'20px',fontWeight:'600'}}>THANH TOÁN</p>
-                                </button>
+                            <div className="row" style={{marginTop:'25px'}}>
+                                <div className="col l-12 m-12 c-12" style={{display:'flex', justifyContent:'center'}}>
+                                    <button onClick={clickPay}
+                                        style={{padding:'10px 100px',backgroundColor:'rgb(201,33,39)',color:'#ffffff',border:'none',borderRadius:'10px',cursor:'pointer'}}>
+                                        <p style={{fontSize:'20px',fontWeight:'600'}}>THANH TOÁN</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="row" style={{padding:'10px 0px',marginTop:'5px'}}>
+                                <div className="col l-12 m-12 c-12" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                    <p style={{fontSize:'13px',fontWeight:'700',color:'red'}}>{payErr}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

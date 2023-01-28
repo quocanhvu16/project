@@ -521,18 +521,57 @@ function Header(props){
                     </div>
                     :
                     <div className="navbar__item--hover navbar-login">
-                      <div>
+                      <div onClick={()=>{
+                        const app = document.querySelector(".App")
+                        const loading = document.createElement('div')
+                        loading.classList.add("frostApp")
+                        loading.style.zIndex= 5
+                        loading.innerHTML=`<div class="loadingBx">
+                                            <div class="loading"></div>
+                                          </div>`
+                        app.appendChild(loading)
+                        setTimeout(()=>{
+                          app.removeChild(loading)
+                          navigate('/user')
+                        },500)
+                      }}>
                         <i className="fa-solid fa-user" style={{fontSize:'40px'}}></i>
-                        <p style={{alignSelf:'flex-end'}}>Tài khoản của tôi</p>
+                        <p style={{alignSelf:'flex-end'}}>Thông tin tài khoản</p>
                         <i className="fa-solid fa-chevron-right"></i>
                       </div>
                       <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'1px',padding:0}}/>
-                      <div>
+                      <div onClick={()=>{
+                        const app = document.querySelector(".App")
+                        const loading = document.createElement('div')
+                        loading.classList.add("frostApp")
+                        loading.style.zIndex= 5
+                        loading.innerHTML=`<div class="loadingBx">
+                                            <div class="loading"></div>
+                                          </div>`
+                        app.appendChild(loading)
+                        setTimeout(()=>{
+                          app.removeChild(loading)
+                          navigate('/user-bill')
+                        },500)
+                      }}>
                         <i className="fa-solid fa-receipt"></i>
                         <p>Đơn hàng của tôi</p>
                       </div>
                       <div style={{backgroundColor:'#f0f0f0',width:'100%',height:'1px',padding:0}}/>
-                      <div>
+                      <div onClick={()=>{
+                        const app = document.querySelector(".App")
+                        const loading = document.createElement('div')
+                        loading.classList.add("frostApp")
+                        loading.style.zIndex= 5
+                        loading.innerHTML=`<div class="loadingBx">
+                                            <div class="loading"></div>
+                                          </div>`
+                        app.appendChild(loading)
+                        setTimeout(()=>{
+                          app.removeChild(loading)
+                          navigate('/user-wallet')
+                        },500)
+                      }}>
                         <i className="fa-solid fa-wallet"></i>
                         <p>Ví tiền của tôi</p>
                       </div>

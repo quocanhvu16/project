@@ -1,6 +1,3 @@
-import Header from '../Header/Header';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
 import './App.css';
 import { useEffect, useState } from 'react'
 import HomePage from '../Pages/HomePage';
@@ -13,6 +10,9 @@ import ThuvienPage from '../Pages/ThuVienPage';
 import ProductPage from '../Pages/ProductPage';
 import { useSelector } from 'react-redux';
 import CartPage from '../Pages/CartPage';
+import UserPage from '../Pages/UserPage';
+import WalletPage from '../Pages/WalletPage';
+import BillPage from '../Pages/BillPage';
 
 function App(){
   const [datas, setDatas]= useState([])
@@ -48,9 +48,11 @@ function App(){
         <Route path='/videobook'  element={<VideoBookPage data={videobook}/>} />
         <Route path='/thuvien' element={<ThuvienPage />} />
         <Route path={`/${product.type}-${product?.name}`} element={<ProductPage product={product}/>} />
-        {/* <Route path={`/123`} element={<ProducePage data={temp} />} /> */}
         <Route path="*" element={<p>Path not resolved</p>} />
         <Route path="/cart" element={<CartPage />}/>
+        <Route path="/user" element={<UserPage />}/>
+        <Route path="/user-wallet" element={<WalletPage />}/>
+        <Route path="/user-bill" element={<BillPage />}/>
       </Routes>
     </div>
   );
