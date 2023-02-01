@@ -7,7 +7,10 @@ function Product(props){
     const productId= props.productId
     const usedispatch = useDispatch()
     const [comment, setComment] = useState(0)
-    const [cart, setCart] = useState([])
+    const data = useSelector(state => state.setInfor)
+    const idUser = useSelector(state => state.idUser)
+    const cart = useSelector(state => state.cart)
+    const idCart = useSelector(state => state.idCart)
     useLayoutEffect(()=> {
         async function fetchHomeList (){
             const requestUrl = `http://localhost:3000/book/${productId}`
@@ -110,6 +113,29 @@ function Product(props){
     const closeComment =() => {
         setWriteComment(false)
     }
+    async function fetchChangeInfor (){
+        const requestUrl = `http://localhost:3000/user/${idUser.id}`
+        const response = await fetch(requestUrl,{
+          method:"put",
+          body: JSON.stringify({
+            ...idUser,
+            "information":{
+                ...data,
+                cart : [...cart,{
+                    id: idCart,
+                    image:product.image,
+                    name : product.name,
+                    amount:amount,
+                    cost: product.cost,
+                    total: amount*(Number(product.cost.replace('.','')))
+                }]
+            }
+          }),
+          headers: {
+            "Content-type":"application/json"
+          }
+        })
+    }
     const [showToastComment,setShowToastComment] = useState(false)
     const sendComment = () => {
         const app = document.querySelector(".App")
@@ -131,6 +157,7 @@ function Product(props){
         setComment(comment+1)
     }
     const handleCart = () => {
+        dispatch({"type":"addCart"})
         if(checkLogin === true){
             const app = document.querySelector(".App")
             const loading = document.createElement('div')
@@ -147,12 +174,35 @@ function Product(props){
                     setShowToastCart(false)
                 },4000)
             },1000) 
-            const data =  {
-                ...product,
+            const data1 =  {
+                id: idCart,
+                image:product.image,
+                name : product.name,
                 amount:amount,
+                cost: product.cost,
                 total: amount*(Number(product.cost.replace('.','')))
             }
-            usedispatch({"type":"addProduct","payload":data})
+            const dataTemp={
+                ...data,
+                cart: [...cart,{
+                    id: idCart,
+                    image:product.image,
+                    name : product.name,
+                    amount:amount,
+                    cost: product.cost,
+                    total: amount*(Number(product.cost.replace('.','')))
+                }]
+            }
+            const userTemp={
+                ...idUser,
+                "information":{
+                    ...dataTemp
+                }
+            }
+            fetchChangeInfor()
+            usedispatch({"type":"addProduct","payload":data1})
+            dispatch({'type':"setInfor","payload":dataTemp})    
+            dispatch({'type':"getIdUser","payload":userTemp})
         }
         if(checkLogin=== false){
             dispatch({"type":'setShowForm'})

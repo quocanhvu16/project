@@ -15,23 +15,23 @@ function Cart (){
             "name": "Đắc nhân tâm",
             "cost": "108.000",
             amount:1,
-            total: 500000
+            total: 108000
         },
         {
             id:2,
             "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
             "name": "Chiếc lá cuối cùng",
-            "cost": "108.000",
+            "cost": "53.000",
             amount:1,
-            total: 500000
+            total: 73000
         },
         {
             id:3,
             "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
             "name": "Truyện Kiều",
-            "cost": "108.000",
+            "cost": "73.000",
             amount:1,
-            total: 500000
+            total: 53000
         }
     ])
     const checkLogin = useSelector(state => state.checkLogIn)
@@ -159,7 +159,7 @@ function Cart (){
                     checked.sort(function(a, b){return b - a});
                     for(let i=newCart.length-1; i>=0; i--){
                         for(let j=checked.length-1; j>= 0; j--){
-                            if(newCart[i].id === checked[j]){
+                            if(newCart[i]?.id === checked[j]){
                                 newCart.splice(i,1)
                             }
                         }   
@@ -168,7 +168,9 @@ function Cart (){
                     return newCart
                 })
                 setChecked([])
+                setCheckedAll(false)
                 setCoinUser(prev => prev - totalBill)
+                dispatch({"type":'payCoin',"payload":totalBill})
                 setTimeout(()=>{
                     setShowToastPaySuccess(false)
                 },4000)

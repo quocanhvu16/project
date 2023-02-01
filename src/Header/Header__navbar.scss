@@ -16,6 +16,9 @@
                 color: white;
             }
         }
+        .icon-list::before{
+            content: "";
+        }
         .nav--mobile-list{
             position: fixed;
             top: 0;
@@ -35,30 +38,45 @@
                 text-align: center;
                 cursor: pointer;
             }
-            .list{
-                display: flex;
-                flex-direction: row;
-                padding: 20px 0px;
-                align-items: center;
-                text-align: center;
-                background-color: white;
-                cursor: pointer;
-
-                i{
-                    font-size: 30px;
-                    min-width: 90px;
+            a{
+                text-decoration: none;
+                &:link{
+                    color: #333;
                 }
-                a{
-                    text-decoration: none;
-                    font-size: 25px;
+                &:visited{
+                    color: #333;
                 }
                 &:hover{
-                    background-color: rgb(233,7,79);
+                    color: white;
+                }
+                .list{
+                    display: flex;
+                    flex-direction: row;
+                    padding: 20px 0px;
+                    align-items: center;
+                    text-align: center;
+                    background-color: white;
+                    cursor: pointer;
+    
+                    i{
+                        font-size: 30px;
+                        min-width: 90px;
+                    }
+                    a{
+                        text-decoration: none;
+                        font-size: 25px;
+                    }
+                    &:hover{
+                        background-color: rgb(233,7,79);
+                    }
+                }
+                .active{
+                    background-color: rgba(201,33,39);
                 }
             }
-            .active{
-                background-color: rgba(201,33,39);
-            }
+        }
+        .active{
+            background-color: rgba(201,33,39);
         }
 
 
@@ -125,10 +143,10 @@
             &__item{
                 cursor: pointer;
                 height: 70px;
-                p{
+                display: flex;
+                justify-content: center;
+                .text{
                     display: none;
-                }
-                i{
                 }
             }
         }

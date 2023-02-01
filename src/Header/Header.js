@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import banner from '../assets/img/banner2.jpg'
 import icon from '../assets/img/icon.jpg'
-import {isValidName,isValidUser,isValidPass} from './Validation'
+import {isValidName,isValidUser,isValidPass, isValidSdt} from './Validation'
 import { Link, useNavigate } from 'react-router-dom';
 
 function Header(props){
@@ -15,13 +15,14 @@ function Header(props){
   const navigate = useNavigate()
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
+  const userData = useSelector(state => state.user)
   const [tabLogIn,setTabLogIn]=useState(true)
   const [tabSignUp,setTabSignUp]=useState(false)
   const [showPass, setShowPass] = useState(false)
-  const [name, setName] = useState("")
+  const [sdt, setSdt] = useState("")
   const [user, setUser] = useState("")
   const [pass, setPass] = useState("")
-  const [nameErr, setNameErr] = useState("")
+  const [sdtErr, setSdtErr] = useState("")
   const [userErr, setUserErr] = useState("")
   const [passErr, setPassErr] = useState("")
   const [checked, setChecked] = useState(false)
@@ -29,15 +30,17 @@ function Header(props){
   const [showToastSignUp ,setShowToastSignUp] = useState(false)
   const [showToastLogIn ,setShowToastLogIn] = useState(false)
   const [showToastLogOut ,setShowToastLogOut] = useState(false)
+  const [idUser, setIdUser] = useState(0)
+  // const [userData, setUserData]= useState([])
   //Bật tắt button
   useEffect(()=>{
-    if(name !== "" && user !== "" && pass !== "" && checked === true){
+    if(sdt !== "" && user !== "" && pass !== "" && checked === true){
       let a = document.getElementById("button__signUp")
       if(a !== null){
         a.classList.add("button__active")
       }
     }
-    if(name === "" || user === "" || pass === "" || checked !== true){
+    if(sdt === "" || user === "" || pass === "" || checked !== true){
       let a = document.getElementById("button__signUp")
       if(a !== null){
         a.classList.remove("button__active")
@@ -70,12 +73,12 @@ function Header(props){
     setTabSignUp(true)
   }
   const setUp = () => {
-    setName("")
+    setSdt("")
     setUser("")
     setPass("")
     setShowPass(false)
     setChecked(false)
-    setNameErr("")
+    setSdtErr("")
     setUserErr("")
     setPassErr("")
   }
@@ -83,7 +86,7 @@ function Header(props){
   const clickLogInTab = () => {
     setTabLogIn(true)
     setTabSignUp(false)
-    setName("")
+    setSdt("")
     setUp()
   }
   const clickSignUpTab = () => {
@@ -107,8 +110,9 @@ function Header(props){
   }
 
   const handleSignUp = () => {
-    setNameErr(isValidName(name)===0 ? "" : "Tên không được chứa chữ số" )
-    if(isValidName(name)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
+    setSdtErr(isValidSdt(sdt)===0 ? "" : isValidSdt(sdt) ===2 ? "Số điện thoại chỉ chứa 10 hoặc 11 chữ số" : "Số điện thoại chỉ được chứa chữ số" )
+    setUserErr(isValidUser(user) === 0 ? "" : "Hãy nhập địa chỉ email hợp lệ")
+    if(isValidSdt(sdt)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
       const app = document.querySelector(".App")
       const loading = document.createElement('div')
       loading.classList.add("frostApp")
@@ -118,6 +122,7 @@ function Header(props){
                         </div>`
       app.appendChild(loading)  
       //Gọi API đăng ký ở đây
+      fetchSignUp()
       setTimeout(()=>{
         setUp()
         clickLogInTab()
@@ -152,6 +157,10 @@ function Header(props){
         dispatch({'type':'initBill','payload':[]})
         dispatch({'type':'initLibrary','payload':[]})
         dispatch({'type':'initCoin','payload':0})
+        dispatch({'type':"setInfor","payload":[]})
+        dispatch({'type':"getIdUser","payload":[]})
+        dispatch({'type':"getIdUser","payload":[]})
+        // dispatch({'type':"initCart","payload":1})
       },4000)
     },2000) 
   }
@@ -179,17 +188,46 @@ function Header(props){
       navigate('/cart')
     },500)
   }
-  async function fetchUser (){
-    const requestUrl = "http://localhost:3000/user/2"
+  // useEffect(()=>{
+  //   async function fetchUserData (){
+  //     const requestUrl = "http://localhost:3000/user"
+  //     const response = await fetch(requestUrl)
+  //     const responseJson = await response.json()
+  //     setUserData(responseJson)
+  //   }
+  //   fetchUserData ()
+  // },[])
+  async function fetchUserData (){
+    const requestUrl = "http://localhost:3000/user"
     const response = await fetch(requestUrl)
     const responseJson = await response.json()
-    dispatch({'type':'setInfor',"payload":responseJson})
-    dispatch({"type":"initProduct","payload":responseJson.information.cart})
-    dispatch({"type":"initBill","payload":responseJson.information.bill})
-    dispatch({"type":"initLibrary","payload":responseJson.information.library})
-    dispatch({'type':'initCoin','payload':responseJson.information.coin})
+    dispatch({"type":"getUser","payload":responseJson})
   }
-  const handleLogIn = () => {
+  async function fetchSignUp (){
+    const requestUrl = "http://localhost:3000/user"
+    const response = await fetch(requestUrl,{
+      method:"post",
+      body: JSON.stringify({
+        "user":user,
+        "pass": pass,
+        "information": {
+          "lastname": "",
+          "firstname": "",
+          "coin": 0,
+          "cart": [],
+          "bill": [],
+          "library": [],
+          "phone": sdt,
+          "mail":user,
+          "type": "user"
+        }
+      }),
+      headers: {
+        "Content-type":"application/json"
+      }
+    })
+  }
+  async function handleLogIn(){
     const app = document.querySelector(".App")
     const loading = document.createElement('div')
     loading.classList.add("frostApp")
@@ -198,17 +236,40 @@ function Header(props){
                         <div class="loading"></div>
                       </div>`
     app.appendChild(loading)
-    setTimeout(()=>{
-      setUp()
-      app.removeChild(loading)
-      setShowToastLogIn(true)
-      dispatch({"type":"login"})
-      hiddenForm()
-      fetchUser()
-      setTimeout(()=>{
-        setShowToastLogIn(false)
-      },4000)
-    },2000) 
+    await fetchUserData()
+    for(let i=0; i<userData.length;i++){
+        if(userData[i].user=== user){
+          if(userData[i].pass=== pass){
+            setIdUser(()=>{
+              fetchUser(i+1)
+              return i+1
+            })
+            setTimeout(()=>{
+              setUp()
+              app.removeChild(loading)
+              setShowToastLogIn(true)
+              dispatch({"type":"login"})
+              hiddenForm()
+              // fetchUser()
+              setTimeout(()=>{
+                setShowToastLogIn(false)
+              },4000)
+            },2000) 
+          }
+        }
+    }
+  }
+  async function fetchUser (i){
+    // console.log("isUser");
+    const requestUrl = `http://localhost:3000/user/${i}`
+    const response = await fetch(requestUrl)
+    const responseJson = await response.json()
+    dispatch({'type':'getIdUser',"payload":responseJson})
+    dispatch({'type':'setInfor',"payload":responseJson.information})
+    dispatch({"type":"initProduct","payload":responseJson.information.cart})
+    dispatch({"type":"initBill","payload":responseJson.information.bill})
+    dispatch({"type":"initLibrary","payload":responseJson.information.library})
+    dispatch({'type':'initCoin','payload':responseJson.information.coin})
   }
 
   const handleShowNavbarList = () => {
@@ -360,18 +421,18 @@ function Header(props){
               <div className="form-login">
                 <div>
                   <form>
-                    {/* THọ và tên */}
+                    {/* Họ và tên */}
                     <div className="form__group">
-                      <p className='text'>Họ và tên</p>
+                      <p className='text'>Số điện thoại</p>
                       <input className='input' 
                             type="text" 
-                            placeholder='Nhập họ và tên' 
+                            placeholder='Nhập số điện thoại' 
                             autoFocus
-                            value={name}
-                            onChange={(e)=> setName(e.target.value)}
+                            value={sdt}
+                            onChange={(e)=> setSdt(e.target.value)}
                       />
                       <div className='err'>
-                        <p>{nameErr}</p>
+                        <p>{sdtErr}</p>
                       </div>
                     </div>
 
@@ -380,7 +441,7 @@ function Header(props){
                       <p className='text'>Tài khoản</p>
                       <input className='input' 
                             type="text" 
-                            placeholder='Nhập tài khoản'
+                            placeholder='Nhập tài khoản: nExample@gmail.com'
                             value={user}
                             onChange={(e)=> setUser(e.target.value)}
                       />
@@ -499,13 +560,13 @@ function Header(props){
               <div className='col l-4 m-6 c-6' onClick={clickCart}>
                 <div className="navbar__item">
                   <i className="fa-solid fa-cart-shopping"></i>
-                  <p>Giỏ Hàng</p>
+                  <p className='text'>Giỏ Hàng</p>
                 </div>
               </div>
               <div className='col l-4 m-6 c-6'>
                 <div className="navbar__item">
                   <i className="fa-solid fa-user"></i>
-                  <p>Tài khoản</p>
+                  <p className='text'>Tài khoản</p>
                   {checkLogin===false ? 
                     <div className="navbar__item--hover">
                       <button className='btn__signIn'
@@ -647,29 +708,41 @@ function Header(props){
                     >
                   <i className="fa-solid fa-xmark"></i>
                 </div>
-                <div className='list active'>
-                  <i className="fa-solid fa-house"></i>
-                  <a href=''><p>Trang chủ</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-book"></i>
-                  <a href=''><p>Sách giấy</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-sharp fa-solid fa-book-atlas"></i>
-                  <a href=''><p>Sách điện tử</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-play"></i>
-                  <a href=''><p>Audio Book</p></a>
-                </div>
-                <div className='list'>
-                  <i className="fa-solid fa-video"></i>
-                  <a href=''><p>Video Book</p></a>
-                </div>
+                <Link to="/">
+                  <div className={classNames('list',{'active': props.activeTrangChu})}>
+                    <i className="fa-solid fa-house"></i>
+                    <p>Trang chủ</p>
+                  </div>
+                </Link>
+                <Link to='/sachgiay'>
+                  <div className={classNames('list',{'active': props.activeSachGiay})}>
+                    <i className="fa-solid fa-book"></i>
+                    <p>Sách giấy</p>
+                  </div>
+                </Link>
+                <Link to="/sachdientu">
+                  <div className={classNames('list',{'active': props.activeSachDienTu})}>
+                    <i className="fa-sharp fa-solid fa-book-atlas"></i>
+                    <p>Sách điện tử</p>
+                  </div>
+                </Link>
+                <Link to="/audiobook">
+                  <div className={classNames('list',{'active': props.activeAudioBook})}>
+                    <i className="fa-solid fa-play"></i>
+                    <p>Audio Book</p>
+                  </div>
+                </Link>
+                <Link to="/videobook">
+                  <div className={classNames('list',{'active': props.activeVideoBook})}>
+                    <i className="fa-solid fa-video"></i>
+                    <p>Video Book</p>
+                  </div>
+                </Link>
               </div>
-              <div className='col m-3 c-3 navbar'>
-                <a href=''><p>Thư viện</p></a>
+              <div className={classNames('col m-3 c-3 navbar',{'active': props.activeThuVien})}>
+                <Link to="/thuvien">
+                  <p>Thư viện</p>
+                </Link>
               </div>
             </div>
     

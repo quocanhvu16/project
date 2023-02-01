@@ -1,22 +1,71 @@
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 function User (){
+    document.title ="Tài khoản"
     const navigate = useNavigate()
-    const data={
-        lastName:"",
-        firtName:"",
-        phone:"",
-        mail:"quocanhvu16@gmail.com",
-        male:"",
-        birthDay:""
+    const dispatch = useDispatch()
+    const [changeInfor, setChangeInfor] = useState(false)
+    const [saveInfor, setSaveInfor] = useState(true)
+    const data = useSelector(state => state.setInfor)
+    const idUser = useSelector(state => state.idUser)
+    const [lastName,setLastName] = useState("")
+    const [firstName,setFirstName] = useState("")
+    const [male,setMale] = useState("")
+    const [birthDay,setBirthDay]= useState("")
+    console.log(idUser);
+    async function fetchChangeInfor (){
+        const requestUrl = `http://localhost:3000/user/${idUser.id}`
+        const response = await fetch(requestUrl,{
+          method:"put",
+          body: JSON.stringify({
+            ...idUser,
+            "information":{
+                ...data,
+                lastName: lastName,
+                firstName: firstName,
+                male: male,
+                birthDay: birthDay,
+                update:true
+            }
+          }),
+          headers: {
+            "Content-type":"application/json"
+          }
+        })
+    }
+    const clickChangeInfor = () =>{
+        if(firstName ==="" || lastName ==="" || male ==="" || birthDay === ""){
+            alert("Yêu cầu xác thực đủ thông tin")
+        }
+        else{
+            const dataTemp={
+                ...data,
+                lastName: lastName,
+                firstName: firstName,
+                male: male,
+                birthDay: birthDay,
+                update:true
+            }
+            const userTemp={
+                ...idUser,
+                "information":{
+                    ...dataTemp
+                }
+            }
+            fetchChangeInfor() 
+            dispatch({'type':"setInfor","payload":dataTemp})    
+            dispatch({'type':"getIdUser","payload":userTemp})
+        }  
     }
     return(
         <div>
             <div className="grid wide user">
                 <div className="row">
-                    <div className="col l-3" >
+                    <div className="col l-3 m-0 c-0" >
                         <div style={{backgroundColor:'#ffffff',paddingLeft:"10px"}} className="category-user">
                             <div>
-                                <h1 style={{padding:'30px 0 20px 20px',color:'#c92127'}}>TÀI KHOẢN</h1>
+                                <h1 style={{padding:'30px 0 20px 2%',color:'#c92127'}}>TÀI KHOẢN</h1>
                                 <div style={{height:'1px',width:'100%',backgroundColor:'rgb(204,204,204)',marginBottom:'30px'}}/>
                             </div>
                             <div onClick={()=>{
@@ -75,72 +124,80 @@ function User (){
                             </div>
                         </div>
                     </div>
-                    <div className="col l-9">
+                    <div className="col l-9 m-12 c-12">
                         <div style={{backgroundColor:'#ffffff',paddingLeft:"15px",marginTop:'15px',paddingBottom:'25px'}}>
                             <div style={{padding:'20px 0'}}>
                                 <h1>THÔNG TIN TÀI KHOẢN</h1>
                             </div>
                             <div style={{display:'flex',alignItems:'center'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Họ*</p>
+                                <p className="text" style={{fontSize:'17px'}}>Họ*</p>
                                 {data.lastName !== ""
                                 ?
                                     <h1 style={{margin:'0'}}>{data.lastName}</h1>
                                 :
-                                    <input type="text" style={{width:'70%',height:'40px',padding:'5px 15px',fontSize:'17px'}} placeholder="Nhập họ"/>
+                                    <input type="text" style={{width:'70%',height:'40px',padding:'5px 15px',fontSize:'17px' }} placeholder="Nhập họ"
+                                    onChange={(e)=> setLastName(e.target.value)}/>
                                 }
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Tên*</p>
-                                {data.firtName !== ""
+                            <div style={{display:'flex',alignItems:'center',marginTop:'25px'}}>
+                                <p className="text" style={{fontSize:'17px'}}>Tên*</p>
+                                {data.firstName !== ""
                                 ?
-                                    <h1 style={{margin:'0'}}>{data.firtName}</h1>
+                                    <h1 style={{margin:'0'}}>{data.firstName}</h1>
                                 :
-                                    <input type="text" style={{width:'70%',height:'40px',padding:'5px 15px',fontSize:'17px'}} placeholder="Nhập tên"/>
+                                    <input onChange={(e)=> setFirstName(e.target.value)}
+                                    type="text" style={{width:'70%',height:'40px',padding:'5px 15px',fontSize:'17px'}} placeholder="Nhập tên"/>
                                 }
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Số điện thoại*</p>
+                            <div style={{display:'flex',alignItems:'center',marginTop:'25px'}}>
+                                <p className="text" style={{fontSize:'17px'}}>Số điện thoại*</p>
                                 {data.phone !== ""
                                 ?
-                                    <h1 style={{margin:'0'}}>{data.phone}</h1>
+                                    <h1 style={{margin:'0',fontSize:'15px'}}>{data.phone}</h1>
                                 :
                                     <input type="text" style={{width:'70%',height:'40px',padding:'5px 15px',fontSize:'17px'}} placeholder="Nhập số điện thoại"/>
                                 }
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Mail</p>
-                                <h1 style={{margin:'0px'}}>{data.mail}</h1>
+                            <div style={{display:'flex',alignItems:'center',marginTop:'25px'}}>
+                                <p className="text" style={{fontSize:'17px'}}>Mail</p>
+                                <h1 style={{margin:'0px',fontSize:'15px'}}>{data.mail}</h1>
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Giới tính*</p>
+                            <div style={{display:'flex',alignItems:'center',marginTop:'25px'}}>
+                                <p className="text" style={{fontSize:'17px'}}>Giới tính*</p>
                                 {data.male !== ""
                                 ?
                                     <h1 style={{margin:'0'}}>{data.male}</h1>
                                 :
                                     <div style={{display:'flex',fontSize:'17px'}}>
-                                        <input type="radio" style={{marginRight:'15px'}} name="male"/>
+                                        <input type="radio" style={{marginRight:'15px'}} name="male" onChange={(e)=> setMale("Nam")}/>
                                         <label style={{marginRight:'25px'}}>Nam</label>
-                                        <input type="radio" style={{marginRight:'15px'}} name="male"/>
+                                        <input type="radio" style={{marginRight:'15px'}} name="male" onChange={(e)=> setMale("Nữ")}/>
                                         <label style={{}}>Nữ</label>
                                     </div>
                                 }
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'20px'}}>
-                                <p style={{fontSize:'17px',minWidth:'20%'}}>Ngày sinh*</p>
+                            <div style={{display:'flex',alignItems:'center',marginTop:'25px'}}>
+                                <p className="text" style={{fontSize:'17px'}}>Ngày sinh*</p>
                                 {data.birthDay !== ""
                                 ?
                                     <h1 style={{margin:'0'}}>{data.birthDay}</h1>
                                 :
                                     <div style={{display:'flex',fontSize:'17px'}}>
-                                        <input type="date" />
+                                        <input type="date" onChange={(e)=> setBirthDay(e.target.value)} />
                                     </div>
                                 }
                             </div>
-                            <div style={{display:'flex',alignItems:'center',marginTop:'40px',justifyContent:'center'}}>
-                                <button style={{padding:'10px 60px',backgroundColor:'#c92127',borderRadius:'10px',border:'none',cursor:'pointer'}}>
-                                    <p style={{color:'#ffffff',fontWeight:'700'}}>Lưu thay đổi</p>
-                                </button>
-                            </div>
+                            {
+                                data.update === false &&
+                                <div style={{display:'flex',alignItems:'center',marginTop:'40px',justifyContent:'center'}}>
+                                    <button style={{padding:'10px 60px',backgroundColor:'#c92127',borderRadius:'10px',border:'none',cursor:'pointer'}}
+                                        onClick={clickChangeInfor}>
+                                        <p style={{color:'#ffffff',fontWeight:'700'}}>Lưu thay đổi</p>
+                                    </button>
+                                </div>
+                            }
+                            
+                           
                         </div>
                     </div>
                 </div>

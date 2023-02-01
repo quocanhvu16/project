@@ -11,4 +11,43 @@
             }
         }
     }
+    .text{
+        min-width: 20%;
+    }
 }
+
+@media (max-width:1023px) and (min-width:600px){
+    .user{
+        .text{
+            min-width: 25%;
+        }
+    }
+} 
+@media (max-width:599px) {
+    .user{
+        .text{
+            max-width: 15%;
+        }
+    }
+} 
+
+@media (max-width:1023px){
+    .bill{
+        .title{
+            display: none !important;
+        }
+        .bill-pc{
+            display: none;
+        }
+        .bill-mobile{
+            display: block;
+        }
+    }
+} 
+@media (min-width:1024px){
+    .bill{
+        .bill-mobile{
+            display: none;
+        }
+    }
+} 

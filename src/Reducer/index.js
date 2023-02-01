@@ -20,6 +20,9 @@ import RootReducer from "./rootReducer";
 import bill from "./bill";
 import library from "./library";
 import coin from "./coin";
+import user from "./user";
+import idUser from "./idUser";
+import idCart from "./idCart";
 
 const persistConfig = {
     key: 'root',
@@ -36,6 +39,9 @@ export const appReducer =combineReducers({
     "bill": bill,
     "library":library,
     "coin":coin,
+    "user":user,
+    "idUser": idUser,
+    "idCart": idCart,
 })
 
 const persistedReducer = persistReducer(persistConfig, appReducer);
