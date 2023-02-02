@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -7,13 +7,25 @@ function Wallet (){
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const coin = useSelector(state => state.coin)
-    const data = useSelector(state => state.setInfor)
     const idUser = useSelector(state => state.idUser)
     const [btnAddMoney, setBtnAddMoney] = useState(false)
     const [addMoney, setAddMoney] = useState(0)
+    const [showToastAddMoneySuccess,setShowToastAddMoneySuccess]= useState(false)
+    const [showToastAddMoneyFailed,setShowToastAddMoneyFailed]= useState(false)
     const clickBtnAddMoney = () =>{
         setBtnAddMoney(true)
     }
+    
+    const clickClose=(e)=>{
+        if(e.target.closest('.toast-close')){
+          let a = document.querySelector('.toast')
+          a.style.animation = 'slideInRight ease 1s forwards'
+          setTimeout(()=>{
+            setShowToastAddMoneySuccess(false)
+            setShowToastAddMoneyFailed(false)
+          },0)
+        }
+      }
     async function fetchChangeInfor (){
         const requestUrl = `http://localhost:3000/user/${idUser.id}`
         const response = await fetch(requestUrl,{
@@ -21,7 +33,7 @@ function Wallet (){
           body: JSON.stringify({
             ...idUser,
             "information":{
-                ...data,
+                ...idUser.information,
                 coin: coin+addMoney
             }
           }),
@@ -30,26 +42,76 @@ function Wallet (){
           }
         })
     }
-    const handleAddMoney = () => {
-        setBtnAddMoney(false)
-        dispatch({'type':"addCoin", payload:addMoney})
-        const dataTemp={
-            ...data,
-            coin: coin+addMoney
+    async function handleAddMoney () {
+        const app = document.querySelector(".App")
+        const loading = document.createElement('div')
+        loading.classList.add("frostApp")
+        loading.style.zIndex= 5
+        loading.innerHTML=`<div class="loadingBx">
+                            <div class="loading"></div>
+                        </div>`
+        app.appendChild(loading)
+        if(addMoney===0){
+            setTimeout(()=>{
+                app.removeChild(loading)
+                setShowToastAddMoneyFailed(true)
+                setTimeout(()=>{
+                    setShowToastAddMoneyFailed(false)
+                },4000)
+            },200)
         }
-        const userTemp={
-            ...idUser,
-            "information":{
-                ...dataTemp
+        else{
+            await fetchChangeInfor() 
+            app.removeChild(loading)
+            setShowToastAddMoneySuccess(true)
+            setBtnAddMoney(false)
+            const userTemp={
+                ...idUser,
+                "information":{
+                    ...idUser.information,
+                    coin: coin+addMoney
+                }
             }
+            dispatch({'type':"addCoin", payload:addMoney})
+            dispatch({'type':"getIdUser","payload":userTemp})
+            setTimeout(()=>{
+                setShowToastAddMoneySuccess(false)
+            },4000)
+            setAddMoney(0)
         }
-        fetchChangeInfor()
-        dispatch({'type':"setInfor","payload":dataTemp})    
-        dispatch({'type':"getIdUser","payload":userTemp})
-        setAddMoney(0)
     }
     return(
         <div>
+            {showToastAddMoneySuccess === true &&
+                <div className='toast toast-login'
+                        onClick={(e)=>clickClose(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>SUCCESS</h3>
+                    <p className='toast-msg'>Nạp tiền thành công</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            {showToastAddMoneyFailed === true &&
+                <div className='toast toast-failed'
+                        onClick={(e)=>clickClose(e)}>
+                    <div className='toast-icon'>
+                    <i className="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>FAILED</h3>
+                    <p className='toast-msg'>Hãy nhập mệnh giá bạn muốn nạp</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
             <div className="grid wide user">
                 <div className="row">
                     <div className="col l-3 m-0 c-0" >

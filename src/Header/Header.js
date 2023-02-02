@@ -15,7 +15,7 @@ function Header(props){
   const navigate = useNavigate()
   const showForm = useSelector(state => state.showForm)
   const checkLogin = useSelector(state => state.checkLogIn)
-  const userData = useSelector(state => state.user)
+  const userData = useSelector(state => state.idUser)
   const [tabLogIn,setTabLogIn]=useState(true)
   const [tabSignUp,setTabSignUp]=useState(false)
   const [showPass, setShowPass] = useState(false)
@@ -29,9 +29,11 @@ function Header(props){
   const [showNavbarList, setShowNavbarList] = useState(false)
   const [showToastSignUp ,setShowToastSignUp] = useState(false)
   const [showToastLogIn ,setShowToastLogIn] = useState(false)
+  const [showToastLogInFailed ,setShowToastLogInFailed] = useState(false)
   const [showToastLogOut ,setShowToastLogOut] = useState(false)
+  const [showToastSignUpFailed ,setShowToastSignUpFailed] = useState(false)
+  const [showToastManyLogIn, setShowToastManyLogIn]=useState(false)
   const [idUser, setIdUser] = useState(0)
-  // const [userData, setUserData]= useState([])
   //Bật tắt button
   useEffect(()=>{
     if(sdt !== "" && user !== "" && pass !== "" && checked === true){
@@ -95,6 +97,10 @@ function Header(props){
     setUp()
   }
 
+  window.onbeforeunload = WindowCloseHanlder;
+  function WindowCloseHanlder(){
+    // dispatch({"type":"setShowForm","payload":false})
+  }
   //Bấm ra ngoài màn hình để tắt tab đăng ký đăng nhập
   const hiddenForm = () => {
     var form = document.getElementById("form")
@@ -109,33 +115,20 @@ function Header(props){
     setShowPass(!showPass)
   }
 
-  const handleSignUp = () => {
-    setSdtErr(isValidSdt(sdt)===0 ? "" : isValidSdt(sdt) ===2 ? "Số điện thoại chỉ chứa 10 hoặc 11 chữ số" : "Số điện thoại chỉ được chứa chữ số" )
-    setUserErr(isValidUser(user) === 0 ? "" : "Hãy nhập địa chỉ email hợp lệ")
-    if(isValidSdt(sdt)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
-      const app = document.querySelector(".App")
-      const loading = document.createElement('div')
-      loading.classList.add("frostApp")
-      loading.style.zIndex= 5
-      loading.innerHTML=`<div class="loadingBx">
-                          <div class="loading"></div>
-                        </div>`
-      app.appendChild(loading)  
-      //Gọi API đăng ký ở đây
-      fetchSignUp()
-      setTimeout(()=>{
-        setUp()
-        clickLogInTab()
-        app.removeChild(loading)
-        setShowToastSignUp(true)
-        setTimeout(()=>{
-          setShowToastSignUp(false)
-        },4000)
-      },2000)
-    }
+  async function fetchChangeLogOut(){
+    const requestUrl = `http://localhost:3000/user/${userData.id}`
+    const response = await fetch(requestUrl,{
+      method:"put",
+      body: JSON.stringify({
+        ...userData,
+        "active":false
+      }),
+      headers: {
+        "Content-type":"application/json"
+      }
+    })
   }
-
-  const handleLogOut=()=> {
+  async function handleLogOut() {
     const app = document.querySelector(".App")
     const loading = document.createElement('div')
     loading.classList.add("frostApp")
@@ -144,25 +137,27 @@ function Header(props){
                         <div class="loading"></div>
                       </div>`
     app.appendChild(loading) 
+    await fetchChangeLogOut()
     dispatch({"type":"logout"})
     setTimeout(()=>{
       app.removeChild(loading)
       setShowToastLogOut(true)
+      dispatch({'type':'setInfor','payload':[]})
+      dispatch({'type':'initProduct','payload':[]})
+      dispatch({'type':'get','payload':[]})
+      dispatch({'type':'initBill','payload':[]})
+      dispatch({'type':'initLibrary','payload':[]})
+      dispatch({'type':'initCoin','payload':0})
+      dispatch({'type':"setInfor","payload":[]})
+      dispatch({'type':"getIdUser","payload":[]})
+      dispatch({'type':"initCart","payload":1})
+      setTimeout(()=>{
+        navigate('/')
+      },3000)
       setTimeout(()=>{
         setShowToastLogOut(false)
-        navigate('/')
-        dispatch({'type':'setInfor','payload':[]})
-        dispatch({'type':'initProduct','payload':[]})
-        dispatch({'type':'get','payload':[]})
-        dispatch({'type':'initBill','payload':[]})
-        dispatch({'type':'initLibrary','payload':[]})
-        dispatch({'type':'initCoin','payload':0})
-        dispatch({'type':"setInfor","payload":[]})
-        dispatch({'type':"getIdUser","payload":[]})
-        dispatch({'type':"getIdUser","payload":[]})
-        // dispatch({'type':"initCart","payload":1})
       },4000)
-    },2000) 
+    },1000) 
   }
 
   const clickClose=(e)=>{
@@ -171,9 +166,15 @@ function Header(props){
       a.style.animation = 'slideInRight ease 1s forwards'
       setTimeout(()=>{
         setShowToastSignUp(false)
+        setShowToastSignUpFailed(false)
+        setShowToastLogIn(false)
+        setShowToastLogInFailed(false)
+        setShowToastLogOut(false)
+        setShowToastManyLogIn(false)
       },1000)
     }
   }
+
   function clickCart(){
     const app = document.querySelector(".App")
     const loading = document.createElement('div')
@@ -188,21 +189,7 @@ function Header(props){
       navigate('/cart')
     },500)
   }
-  // useEffect(()=>{
-  //   async function fetchUserData (){
-  //     const requestUrl = "http://localhost:3000/user"
-  //     const response = await fetch(requestUrl)
-  //     const responseJson = await response.json()
-  //     setUserData(responseJson)
-  //   }
-  //   fetchUserData ()
-  // },[])
-  async function fetchUserData (){
-    const requestUrl = "http://localhost:3000/user"
-    const response = await fetch(requestUrl)
-    const responseJson = await response.json()
-    dispatch({"type":"getUser","payload":responseJson})
-  }
+
   async function fetchSignUp (){
     const requestUrl = "http://localhost:3000/user"
     const response = await fetch(requestUrl,{
@@ -210,16 +197,20 @@ function Header(props){
       body: JSON.stringify({
         "user":user,
         "pass": pass,
+        "active":false,
         "information": {
-          "lastname": "",
-          "firstname": "",
+          "lastName": "",
+          "firstName": "",
           "coin": 0,
           "cart": [],
           "bill": [],
           "library": [],
           "phone": sdt,
           "mail":user,
-          "type": "user"
+          "type": "user",
+          "update":false,
+          "male":"",
+          "birthDay":"",
         }
       }),
       headers: {
@@ -227,6 +218,53 @@ function Header(props){
       }
     })
   }
+  async function handleSignUp (){
+    setSdtErr(isValidSdt(sdt)===0 ? "" : isValidSdt(sdt) ===2 ? "Số điện thoại chỉ chứa 10 hoặc 11 chữ số" : "Số điện thoại chỉ được chứa chữ số" )
+    setUserErr(isValidUser(user) === 0 ? "" : "Hãy nhập địa chỉ email hợp lệ")
+    if(isValidSdt(sdt)===0 && isValidUser(user)===0 && isValidPass(pass)===0){
+      const app = document.querySelector(".App")
+      const loading = document.createElement('div')
+      loading.classList.add("frostApp")
+      loading.style.zIndex= 5
+      loading.innerHTML=`<div class="loadingBx">
+                          <div class="loading"></div>
+                        </div>`
+      app.appendChild(loading)
+      let responseJson = await fetchLogIn()  
+      app.removeChild(loading)
+      for(let i=0;i<responseJson.length;i++){
+        if(responseJson[i].user=== user){
+          setShowToastSignUpFailed(true)
+          setTimeout(()=>{
+            setShowToastSignUpFailed(false)
+          },4000)
+        }
+        else{
+          if(i===responseJson.length-1){
+            await fetchSignUp()
+            setUp()
+            clickLogInTab()
+            setShowToastSignUp(true)
+            setTimeout(()=>{
+              setShowToastSignUp(false)
+            },4000)
+          }
+        }
+      }
+    }
+  }
+
+  async function fetchLogIn(){
+    async function fetchUserData (){
+        const requestUrl = "http://localhost:3000/user"
+        const response = await fetch(requestUrl)
+        const responseJson = await response.json()
+        return responseJson
+    }
+    let temp = await fetchUserData ()
+    return temp
+  }
+  
   async function handleLogIn(){
     const app = document.querySelector(".App")
     const loading = document.createElement('div')
@@ -236,40 +274,91 @@ function Header(props){
                         <div class="loading"></div>
                       </div>`
     app.appendChild(loading)
-    await fetchUserData()
-    for(let i=0; i<userData.length;i++){
-        if(userData[i].user=== user){
-          if(userData[i].pass=== pass){
+    let responseJson = await fetchLogIn()
+    app.removeChild(loading)
+    for(let i=0; i<responseJson.length;i++){
+      if(responseJson[i].user=== user){
+        if(responseJson[i].pass=== pass){
+          if(responseJson[i].active===true){
+            setShowToastManyLogIn(true)
+            setTimeout(()=>{
+              setShowToastManyLogIn(false)
+            },4000)
+          }
+          else{
+            let responseJson = await fetchUser(i+1)
+            async function a(){
+              const userTemp={
+                ...responseJson,
+                "active":true
+              }
+              dispatch({'type':"getIdUser","payload":userTemp})
+            }
+            await a()
             setIdUser(()=>{
-              fetchUser(i+1)
               return i+1
             })
+            await fetchChangeLogIn(i+1,responseJson)
+            setUp()
+            setShowToastLogIn(true)
+            dispatch({"type":"login"})
+            hiddenForm()
             setTimeout(()=>{
-              setUp()
-              app.removeChild(loading)
-              setShowToastLogIn(true)
-              dispatch({"type":"login"})
-              hiddenForm()
-              // fetchUser()
-              setTimeout(()=>{
-                setShowToastLogIn(false)
-              },4000)
-            },2000) 
+              setShowToastLogIn(false)
+            },4000)
           }
         }
+        else{
+          if(i===responseJson.length-1){
+            setShowToastLogInFailed(true)
+            setTimeout(()=>{
+              setShowToastLogInFailed(false)
+            },4000)
+          }
+          setShowToastLogInFailed(true)
+          setTimeout(()=>{
+            setShowToastLogInFailed(false)
+          },4000)
+        }
+      }
+      else{
+        if(i===responseJson.length-1){
+          setShowToastLogInFailed(true)
+          setTimeout(()=>{
+            setShowToastLogInFailed(false)
+          },4000)
+        }
+      }
     }
   }
+  async function fetchChangeLogIn(i,responseJson){
+    const requestUrl = `http://localhost:3000/user/${i}`
+    const response = await fetch(requestUrl,{
+      method:"put",
+      body: JSON.stringify({
+        ...responseJson,
+        "active":true
+      }),
+      headers: {
+        "Content-type":"application/json"
+      }
+    })
+  }
+
   async function fetchUser (i){
-    // console.log("isUser");
     const requestUrl = `http://localhost:3000/user/${i}`
     const response = await fetch(requestUrl)
     const responseJson = await response.json()
-    dispatch({'type':'getIdUser',"payload":responseJson})
-    dispatch({'type':'setInfor',"payload":responseJson.information})
-    dispatch({"type":"initProduct","payload":responseJson.information.cart})
-    dispatch({"type":"initBill","payload":responseJson.information.bill})
-    dispatch({"type":"initLibrary","payload":responseJson.information.library})
-    dispatch({'type':'initCoin','payload':responseJson.information.coin})
+    async function a(){
+      dispatch({'type':'getIdUser',"payload":responseJson})
+      dispatch({'type':'setInfor',"payload":responseJson.information})
+      dispatch({"type":"initProduct","payload":responseJson.information.cart})
+      dispatch({"type":"initBill","payload":responseJson.information.bill})
+      dispatch({"type":"initLibrary","payload":responseJson.information.library})
+      dispatch({'type':'initCoin','payload':responseJson.information.coin})
+    }
+    await a()
+    return responseJson
   }
 
   const handleShowNavbarList = () => {
@@ -290,6 +379,21 @@ function Header(props){
 
   return (
     <div>
+      {showToastManyLogIn===true &&
+      <div className='toast toast-failed'
+            onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+        <i className="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>FAILED</h3>
+          <p className='toast-msg'>Tài khoản đang được đăng nhập ở nơi khác</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
       {showToastSignUp === true &&
       <div className='toast toast-signup'
             onClick={(e)=>clickClose(e)}>
@@ -299,6 +403,36 @@ function Header(props){
         <div className='toast-body'>
           <h3 className='toast-title'>SUCCESS</h3>
           <p className='toast-msg'>Đăng kí thành công</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
+      {showToastLogInFailed === true &&
+      <div className='toast toast-failed'
+            onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+          <i className="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>FAILED</h3>
+          <p className='toast-msg'>Tài khoản hoặc mật khẩu không chính xác.</p>
+        </div>
+        <div className='toast-close'>
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      }
+      {showToastSignUpFailed === true &&
+      <div className='toast toast-failed'
+            onClick={(e)=>clickClose(e)}>
+        <div className='toast-icon'>
+          <i className="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div className='toast-body'>
+          <h3 className='toast-title'>FAILED</h3>
+          <p className='toast-msg'>Tài khoản đã tồn tại.</p>
         </div>
         <div className='toast-close'>
           <i className="fa-solid fa-xmark"></i>
@@ -374,6 +508,7 @@ function Header(props){
                     <div className="form__group">
                       <p className='text'>Tài khoản</p>
                       <input className='input' 
+                            value={user}
                             type="text" 
                             placeholder='Nhập tài khoản'
                             autoFocus
@@ -388,6 +523,7 @@ function Header(props){
                     <div className="form__group">
                       <p className='text'>Mật khẩu</p>
                       <input className='input'
+                            value={pass}
                             type={showPass===true ? "text" :"password"} 
                             placeholder='Nhập mật khẩu'
                             onChange={(e)=> setPass(e.target.value)}

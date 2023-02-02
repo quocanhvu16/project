@@ -1080,7 +1080,7 @@
         "coin": 3000000,
         "cart": [
           {
-            "id": 61,
+            "id": 4,
             "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
             "name": "Đắc nhân tâm",
             "amount": 1,
@@ -1088,12 +1088,12 @@
             "total": 108000
           },
           {
-            "id": 62,
-            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
-            "name": "Đắc nhân tâm",
+            "id": 5,
+            "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
+            "name": "Truyện Kiều",
             "amount": 1,
-            "cost": "108.000",
-            "total": 108000
+            "cost": "53.000",
+            "total": 53000
           }
         ],
         "bill": [],
@@ -1230,6 +1230,26 @@
         "type": "user"
       },
       "id": 4
+    },
+    {
+      "user": "1@gmail.com",
+      "pass": "1",
+      "active": false,
+      "information": {
+        "lastName": "",
+        "firstName": "",
+        "coin": 0,
+        "cart": [],
+        "bill": [],
+        "library": [],
+        "phone": "0904443580",
+        "mail": "1@gmail.com",
+        "type": "user",
+        "update": false,
+        "male": "",
+        "birthDay": ""
+      },
+      "id": 5
     }
   ]
 }

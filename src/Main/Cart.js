@@ -6,34 +6,39 @@ function Cart (){
     document.title= "Giỏ hàng"
     const dispatch= useDispatch();
     const coin = useSelector(state => state.coin)
-    // const cart = useSelector(state => state.cart)
+    const cart1 = useSelector(state => state.cart)
     const [ payErr , setPayErr] = useState("")
-    const [cart ,setCart] = useState([
-        {
-            id:1,
-            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
-            "name": "Đắc nhân tâm",
-            "cost": "108.000",
-            amount:1,
-            total: 108000
-        },
-        {
-            id:2,
-            "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
-            "name": "Chiếc lá cuối cùng",
-            "cost": "53.000",
-            amount:1,
-            total: 73000
-        },
-        {
-            id:3,
-            "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
-            "name": "Truyện Kiều",
-            "cost": "73.000",
-            amount:1,
-            total: 53000
-        }
-    ])
+    const [cart, setCart] = useState(()=>{
+        return [...cart1]
+    })
+    console.log("cart1",cart1);
+    console.log(cart);
+    // const [cart ,setCart] = useState([
+    //     {
+    //         id:1,
+    //         "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+    //         "name": "Đắc nhân tâm",
+    //         "cost": "108.000",
+    //         amount:1,
+    //         total: 108000
+    //     },
+    //     {
+    //         id:2,
+    //         "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
+    //         "name": "Chiếc lá cuối cùng",
+    //         "cost": "53.000",
+    //         amount:1,
+    //         total: 73000
+    //     },
+    //     {
+    //         id:3,
+    //         "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
+    //         "name": "Truyện Kiều",
+    //         "cost": "73.000",
+    //         amount:1,
+    //         total: 53000
+    //     }
+    // ])
     const checkLogin = useSelector(state => state.checkLogIn)
     const [bill, setBill] = useState([])
     const [totalBill ,setTotalBill] = useState(0);
@@ -44,11 +49,11 @@ function Cart (){
     const [showToastCartEmpty, setShowToastCartEmpty] = useState(false)
     const [coinUser ,setCoinUser] = useState(coin)
     const clickTrash=(id)=>{
-        // dispatch({'type':"removeProduct","payload":index})
         setCart(cart=>{
             const newCart = [...cart]
             for(let i=0 ; i< newCart?.length;i++){
                 if(newCart[i].id === id ){
+                    dispatch({"type":"removeProduct","payload":i})
                     newCart.splice(i,1)
                     setBill(bill =>{
                         const newBill = [...bill]

@@ -20,7 +20,6 @@ import RootReducer from "./rootReducer";
 import bill from "./bill";
 import library from "./library";
 import coin from "./coin";
-import user from "./user";
 import idUser from "./idUser";
 import idCart from "./idCart";
 
@@ -39,7 +38,6 @@ export const appReducer =combineReducers({
     "bill": bill,
     "library":library,
     "coin":coin,
-    "user":user,
     "idUser": idUser,
     "idCart": idCart,
 })
