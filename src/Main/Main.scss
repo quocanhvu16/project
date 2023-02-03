@@ -80,16 +80,54 @@
                     align-items: center;
                 }
                 .sale{
+                    position: relative;
                     display: flex;
                     margin: 10px 10px 5px 10px;
                     border-radius: 30px;
-                    background-color: #c92127;
+                    background-color: rgba(201,33,39,0.5);
                     justify-content: center;
                     font-size: 15px;
                     color: white;
-    
+                    .sale-inner{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 26px;
+                        // white-space: nowrap;
+                        // overflow: hidden;
+                        background-color: rgba(201,33,39);
+                        width: 0;
+                        border-radius: 30px;
+                    }
                     p{
                         padding: 5px 0;
+                        z-index: 1;
+                    }
+                }
+                .rating{
+                    padding: 10px 10px;
+                    font-size: 15px;
+                    .stars-outer{
+                        position: relative;
+                        display: inline-block;
+                    }
+                    .stars-inner{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        width: 0;
+                    }
+                    .stars-outer::before{
+                        content: "\f005 \f005 \f005 \f005 \f005";
+                        font-family: FontAwesome;
+                        color: #ccc;
+                    }
+                    .stars-inner::before{
+                        content: "\f005 \f005 \f005 \f005 \f005";
+                        font-family: FontAwesome;
+                        color: #f8ce0b;
                     }
                 }
             }

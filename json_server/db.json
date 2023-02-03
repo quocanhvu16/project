@@ -6,9 +6,16 @@
       "name": "Đắc nhân tâm",
       "cost": "108.000",
       "sale": 4,
+      "total": 100,
       "author": "Dale Carnegie",
       "publisher": "Hà Nội",
       "type": "Sách giấy",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "description": "Nội dung của cuốn sách đắc nhân tâm chủ yếu hướng đến nghệ thuật ứng xử cơ bản trong giao tiếp hàng ngày, cách tạo thiện cảm tìm kiếm sự yêu mến chân thật của người đối diện. Và hướng đến giá trị cốt lõi chính là “hiểu mình, hiểu người” và từ đó tạo ra một cuộc sống tốt đẹp, nhẹ nhàng.",
       "comment": [
         {
@@ -64,6 +71,11 @@
           "name": "anh123",
           "content": "Hay",
           "rating": 4
+        },
+        {
+          "name": "Anh",
+          "content": "Test",
+          "rating": 1
         }
       ]
     },
@@ -72,10 +84,17 @@
       "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
       "name": "Truyện Kiều",
       "cost": "53.000",
-      "sale": 78,
+      "sale": 100,
+      "total": 100,
       "author": "Nguyễn Du",
       "type": "Sách giấy",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -130,6 +149,66 @@
           "name": "anh123",
           "content": "Hay",
           "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "anhTest",
+          "content": "hay",
+          "rating": 4
+        },
+        {
+          "name": "a",
+          "content": "a",
+          "rating": 4
+        },
+        {
+          "name": "a",
+          "content": "a",
+          "rating": 5
+        },
+        {
+          "name": "a",
+          "content": "a",
+          "rating": 5
+        },
+        {
+          "name": "a",
+          "content": "a",
+          "rating": 5
+        },
+        {
+          "name": "a",
+          "content": "a",
+          "rating": 5
+        },
+        {
+          "name": "a",
+          "content": "AVBC",
+          "rating": 5
         }
       ]
     },
@@ -139,8 +218,15 @@
       "name": "Chiếc lá cuối cùng",
       "cost": "73.000",
       "sale": 43,
+      "total": 100,
       "author": "O. Henry",
       "type": "Sách giấy",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "publisher": "Hà Nội",
       "comment": [
         {
@@ -196,6 +282,11 @@
           "name": "anh123",
           "content": "Hay",
           "rating": 4
+        },
+        {
+          "name": "Anh ",
+          "content": "Hay",
+          "rating": 5
         }
       ]
     },
@@ -205,9 +296,16 @@
       "name": "Harry Potter và hòn đá phù thủy",
       "cost": "89000",
       "sale": 34,
+      "total": 100,
       "author": "J. K. Rowling",
       "type": "Sách giấy",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -271,9 +369,16 @@
       "name": "Đắc nhân tâm",
       "cost": "108000",
       "sale": 0,
+      "total": 100,
       "author": "Dale Carnegie",
       "publisher": "Hà Nội",
       "type": "Sách điện tử",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -338,9 +443,16 @@
       "name": "Truyện Kiều",
       "cost": "53000",
       "sale": 78,
+      "total": 100,
       "author": "Nguyễn Du",
       "type": "Sách điện tử",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -404,9 +516,16 @@
       "name": "Chiếc lá cuối cùng",
       "cost": "73000",
       "sale": 43,
+      "total": 100,
       "author": "O. Henry",
       "type": "Sách điện tử",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -470,9 +589,16 @@
       "name": "Harry Potter và hòn đá phù thủy",
       "cost": "89000",
       "sale": 34,
+      "total": 100,
       "author": "J. K. Rowling",
       "type": "Sách điện tử",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -536,9 +662,16 @@
       "name": "Đắc nhân tâm",
       "cost": "108000",
       "sale": 0,
+      "total": 100,
       "author": "Dale Carnegie",
       "publisher": "Hà Nội",
       "type": "Audiobook",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -603,9 +736,16 @@
       "name": "Truyện Kiều",
       "cost": "53000",
       "sale": 78,
+      "total": 100,
       "author": "Nguyễn Du",
       "type": "Audiobook",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -669,9 +809,16 @@
       "name": "Chiếc lá cuối cùng",
       "cost": "73000",
       "sale": 43,
+      "total": 100,
       "author": "O. Henry",
       "type": "Audiobook",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -735,9 +882,16 @@
       "name": "Harry Potter và hòn đá phù thủy",
       "cost": "89000",
       "sale": 34,
+      "total": 100,
       "author": "J. K. Rowling",
       "type": "Audiobook",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -804,6 +958,13 @@
       "author": "Dale Carnegie",
       "publisher": "Hà Nội",
       "type": "Videobook",
+      "total": 100,
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -871,6 +1032,13 @@
       "author": "Nguyễn Du",
       "type": "Videobook",
       "publisher": "Hà Nội",
+      "total": 100,
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -936,7 +1104,14 @@
       "sale": 43,
       "author": "O. Henry",
       "type": "Videobook",
+      "total": 100,
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -1000,9 +1175,16 @@
       "name": "Harry Potter và hòn đá phù thủy",
       "cost": "89000",
       "sale": 34,
+      "total": 100,
       "author": "J. K. Rowling",
       "type": "Videobook",
       "publisher": "Hà Nội",
+      "preview": [
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+        "https://bizweb.dktcdn.net/100/197/269/products/tri-tue-do-thai.jpg?v=1510634413673",
+        "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png"
+      ],
       "comment": [
         {
           "id": 1,
@@ -1234,20 +1416,61 @@
     {
       "user": "1@gmail.com",
       "pass": "1",
-      "active": false,
+      "active": true,
       "information": {
-        "lastName": "",
-        "firstName": "",
-        "coin": 0,
-        "cart": [],
+        "lastName": "Vũ",
+        "firstName": "Anh",
+        "coin": 500000,
+        "cart": [
+          {
+            "id": 1,
+            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+            "name": "Đắc nhân tâm",
+            "amount": 1,
+            "cost": "108.000",
+            "total": 108000
+          },
+          {
+            "id": 2,
+            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+            "name": "Đắc nhân tâm",
+            "amount": 2,
+            "cost": "108.000",
+            "total": 216000
+          },
+          {
+            "id": 3,
+            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+            "name": "Đắc nhân tâm",
+            "amount": 1,
+            "cost": "108.000",
+            "total": 108000
+          },
+          {
+            "id": 4,
+            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+            "name": "Đắc nhân tâm",
+            "amount": 1,
+            "cost": "108.000",
+            "total": 108000
+          },
+          {
+            "id": 5,
+            "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
+            "name": "Truyện Kiều",
+            "amount": 3,
+            "cost": "53.000",
+            "total": 159000
+          }
+        ],
         "bill": [],
         "library": [],
         "phone": "0904443580",
         "mail": "1@gmail.com",
         "type": "user",
-        "update": false,
-        "male": "",
-        "birthDay": ""
+        "update": true,
+        "male": "Nam",
+        "birthDay": "2023-02-11"
       },
       "id": 5
     }

@@ -319,32 +319,11 @@
 .click-preview{
     position: fixed;
     top:0;
-    display: flex;
     left: 0;
     bottom: 0;
     right: 0;
-    // height: 80%;
-    // width: 40%;
-    background-color: rgb(10, 10, 10);
+    background-color: rgba(37, 25, 25, 0.3);
     z-index: 5;
-    align-items: center;
-    justify-content: center;
-    .content{
-        position:relative;
-        width: 70%;
-        left: 15%;
-    }
-    .close-preview{
-        cursor: pointer;
-        position: absolute;
-        font-size: 50px;
-        right: 10px;
-        top: 10px;
-        i{
-            color: #ffffff;
-        }
-        // background-color: #918c8c;
-    }
 }
 
 .write-comment{
