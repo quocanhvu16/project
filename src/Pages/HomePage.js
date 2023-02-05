@@ -9,10 +9,12 @@ function HomePage (props) {
     const sachdientu = props.sachdientu
     const audiobook = props.audiobook
     const videobook = props.videobook
+    // const data = [...sachgiay,...sachdientu,...audiobook,...videobook]
+    // console.log(data);
     // console.log(sachgiay);
     return(
         <div>
-            <Header activeTrangChu/>
+            <Header activeTrangChu activeBanner/>
             <Trangchu sachgiay={sachgiay} sachdientu={sachdientu} audiobook={audiobook} videobook={videobook}/>
             <Footer />
         </div>

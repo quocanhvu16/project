@@ -48,7 +48,7 @@ function App(){
         <Route path='/videobook'  element={<VideoBookPage data={videobook}/>} />
         <Route path='/thuvien' element={<ThuvienPage />} />
         <Route path={`/${product.type}-${product?.name}`} element={<ProductPage product={product}/>} />
-        <Route path="*" element={<p>Path not resolved</p>} />
+        {/* <Route path="*" element={<div className='frostApp'></div>} /> */}
         <Route path="/cart" element={<CartPage />}/>
         <Route path="/user" element={<UserPage />}/>
         <Route path="/user-wallet" element={<WalletPage />}/>

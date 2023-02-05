@@ -35,9 +35,14 @@ function Product(props){
     const [percentRating4, setPercenRating4] = useState(0)
     const [percentRating5, setPercenRating5] = useState(0)
     const [showToastCart,setShowToastCart] = useState(false)
+    const [showToastCartFailed,setShowToastCartFailed] = useState(false)
     const [name, setName] = useState("")
     const [content, setContent] = useState("")
     const [rating , setRating] = useState(0)
+    const [arrImage,setArrImage]=useState([])
+    const [writeComment , setWriteComment] = useState(false)
+    const [index,setIndex]=useState(0)
+    const [preview,setPreview] = useState(false)
     const decAmount=()=>{
         if(amount>1){
             setAmount(amount-1)
@@ -111,7 +116,7 @@ function Product(props){
     const clickSignUp =()=>{
         dispatch({"type":"setShowForm"})
     }
-    const [writeComment , setWriteComment] = useState(false)
+
     const clickButton = () =>{
         setWriteComment(true)
     }
@@ -181,32 +186,43 @@ function Product(props){
                                 <div class="loading"></div>
                             </div>`
             app.appendChild(loading)
-            async function a(){
-                const dataTemp =  {
-                    id: idCart,
-                    image:product.image,
-                    name : product.name,
-                    amount:amount,
-                    cost: product.cost,
-                    total: amount*(Number(product.cost.replace('.','')))
-                }
-                const userTemp={
-                    ...idUser,
-                    "information":{
-                        ...idUser.information,
-                        "cart":[...idUser.information.cart,dataTemp]
-                    }
-                }
-                usedispatch({"type":"addProduct","payload":dataTemp})   
-                dispatch({'type':"getIdUser","payload":userTemp})
+            if(amount > (product.total - product.sale)){
+                app.removeChild(loading)
+                setShowToastCartFailed(true)
+                setTimeout(()=>{
+                    setShowToastCartFailed(false)
+                },4000)
             }
-            await a()
-            await fetchChangeCart()
-            app.removeChild(loading)
-            setShowToastCart(true)
-            setTimeout(()=>{
-                setShowToastCart(false)
-            },4000)
+            else{
+                async function a(){
+                    const dataTemp =  {
+                        ...product,
+                        id: idCart,
+                        idProduct: product.id,
+                        image:product.image,
+                        name : product.name,
+                        amount:amount,
+                        cost: product.cost,
+                        total: amount*(Number(product.cost.replace('.','')))
+                    }
+                    const userTemp={
+                        ...idUser,
+                        "information":{
+                            ...idUser.information,
+                            "cart":[...idUser.information.cart,dataTemp]
+                        }
+                    }
+                    dispatch({"type":"addProduct","payload":dataTemp})   
+                    dispatch({'type':"getIdUser","payload":userTemp})
+                }
+                await a()
+                await fetchChangeCart()
+                app.removeChild(loading)
+                setShowToastCart(true)
+                setTimeout(()=>{
+                    setShowToastCart(false)
+                },4000)
+            }
         }
         if(checkLogin=== false){
             dispatch({"type":'setShowForm'})
@@ -221,7 +237,9 @@ function Product(props){
             "information":{
                 ...idUser.information,
                 cart : [...cart,{
+                    ...product,
                     id: idCart,
+                    idProduct : product.id,
                     image:product.image,
                     name : product.name,
                     amount:amount,
@@ -236,7 +254,6 @@ function Product(props){
         })
     }
 
-    const [preview,setPreview] = useState(false)
     const clickPreview = ()=>{
         setPreview(true)
     }
@@ -254,8 +271,6 @@ function Product(props){
           },1000)
         }
     }
-    const [arrImage,setArrImage]=useState([])
-    const [index,setIndex]=useState(0)
     const Next = () => {
         if(index===arrImage.length-1){
             setIndex(0)
@@ -275,6 +290,8 @@ function Product(props){
     useLayoutEffect(()=>{
         setArrImage(product.preview)
     },[product])
+
+    
     return(
         <div className="main-product">
             {preview === true && 
@@ -359,6 +376,20 @@ function Product(props){
                     <div className='toast-body'>
                     <h3 className='toast-title'>SUCCESS</h3>
                     <p className='toast-msg'>Viết đánh giá thành công</p>
+                    </div>
+                    <div className='toast-close'>
+                    <i className="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            }
+            {showToastCartFailed===true &&
+                <div className='toast toast-failed' onClick={(e)=>clickClose(e)}>
+                    <div className='toast-icon'>
+                        <i className="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div className='toast-body'>
+                    <h3 className='toast-title'>FAILED</h3>
+                    <p className='toast-msg'>Sản phẩm này đã hết hàng</p>
                     </div>
                     <div className='toast-close'>
                     <i className="fa-solid fa-xmark"></i>

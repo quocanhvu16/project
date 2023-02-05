@@ -2,7 +2,7 @@
 const cart = (state=[],action)=> {
     switch(action.type){
         case "initProduct":
-            state=action.payload
+            state=[...action.payload]
             break
         case "addProduct":
             state=[...state,action.payload];   
@@ -10,7 +10,7 @@ const cart = (state=[],action)=> {
         case "removeProduct":
             const newState = [...state]
             newState.splice(action.payload,1)
-            state=newState   
+            state=[...newState]  
             break
     }
     return state;

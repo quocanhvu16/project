@@ -1,6 +1,6 @@
 import './Header.scss'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -8,6 +8,18 @@ import banner from '../assets/img/banner2.jpg'
 import icon from '../assets/img/icon.jpg'
 import {isValidName,isValidUser,isValidPass, isValidSdt} from './Validation'
 import { Link, useNavigate } from 'react-router-dom';
+import banner11 from '../assets/img/banner11.jpg';
+import banner12 from '../assets/img/banner12.jpg';
+import banner13 from '../assets/img/banner13.jpg';
+import banner14 from '../assets/img/banner14.jpg';
+import banner15 from '../assets/img/banner15.png';
+import banner21 from '../assets/img/banner21.jpg';
+import banner22 from '../assets/img/banner22.jpg';
+import banner31 from '../assets/img/banner31.png';
+import banner32 from '../assets/img/banner32.png';
+import banner33 from '../assets/img/banner33.png';
+import banner34 from '../assets/img/banner34.png';
+
 
 function Header(props){
   //Khai báo các biến cần dùng
@@ -34,6 +46,16 @@ function Header(props){
   const [showToastSignUpFailed ,setShowToastSignUpFailed] = useState(false)
   const [showToastManyLogIn, setShowToastManyLogIn]=useState(false)
   const [idUser, setIdUser] = useState(0)
+  const [datas, setDatas]= useState([])  
+  useEffect(()=> {
+    async function fetchHomeList (){
+      const requestUrl = "http://localhost:3000/book"
+      const response = await fetch(requestUrl)
+      const responseJson = await response.json()
+      setDatas(responseJson)
+    }
+    fetchHomeList()
+  }, [])
   //Bật tắt button
   useEffect(()=>{
     if(sdt !== "" && user !== "" && pass !== "" && checked === true){
@@ -152,7 +174,7 @@ function Header(props){
         dispatch({'type':'initCoin','payload':0})
         dispatch({'type':"setInfor","payload":[]})
         dispatch({'type':"getIdUser","payload":[]})
-        dispatch({'type':"initCart","payload":1})
+        // dispatch({'type':"initCart","payload":1})
       },3000)
       setTimeout(()=>{
         setShowToastLogOut(false)
@@ -376,7 +398,60 @@ function Header(props){
     },500)
     a.style.animation= "scrollLeft 0.5s linear forwards"
   }
-
+  const [input , setInput]= useState("")
+  function removeVietnameseTones(str) {
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+    str = str.replace(/đ/g,"d");
+    str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+    str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+    str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+    str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+    str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+    str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+    str = str.replace(/Đ/g, "D");
+    // Some system encode vietnamese combining accent as individual utf-8 characters
+    // Một vài bộ encode coi các dấu mũ, dấu chữ như một kí tự riêng biệt nên thêm hai dòng này
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // ̀ ́ ̃ ̉ ̣  huyền, sắc, ngã, hỏi, nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // ˆ ̆ ̛  Â, Ê, Ă, Ơ, Ư
+    // Remove extra spaces
+    // Bỏ các khoảng trắng liền nhau
+    str = str.replace(/ + /g," ");
+    str = str.trim();
+    // Remove punctuations
+    // Bỏ dấu câu, kí tự đặc biệt
+    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g," ");
+    return str;
+}
+  function checkSearch(){
+   let nameSearch = datas.filter(value=>{
+      return removeVietnameseTones(value.name.toUpperCase()).includes(removeVietnameseTones(input.toUpperCase()))
+   })
+  return nameSearch
+  }
+  let data =checkSearch()
+  const [index, setIndex]= useState(0)
+  const arrBanner = [banner11,banner12,banner13,banner14,banner15]
+  const Next = () => {
+    if(index=== arrBanner.length-1){
+        setIndex(0)
+    }
+    else{
+        setIndex(prev => prev +1)
+    }
+  }
+  const Prev = () => {
+    if(index===0){
+        setIndex(prev => arrBanner.length-1)
+    }
+    else{
+        setIndex(prev => prev -1)
+    }
+  }
   return (
     <div>
       {showToastManyLogIn===true &&
@@ -646,13 +721,43 @@ function Header(props){
           <div className='col l-6 m-8 c-8'>
             <div className='search'>
               <input 
-                className="search__input" 
                 type="text"  
-                placeholder="Tìm kiếm ..." 
-                autoFocus/>
+                placeholder="Tìm kiếm ..."
+                onChange={(e)=>setInput(e.target.value)} 
+                onInput={checkSearch}
+                />
               <button className="search__button">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
+              <div className='frame-search' 
+                    onMouseDown={(e)=>e.preventDefault()}
+                  style={{height:"330px",width:'90%',backgroundColor:"#ffffff",position:'absolute',zIndex:'1',overflowX:'auto'}}>
+                {data.map((data,index)=>{
+                  return(
+                    <Link to={`/${data.type}-${data.name}`} 
+                          style={{textDecoration:'none'}} key={index} 
+                          onClick={()=>{
+                            dispatch({"type":"get","payload":data})
+                            Location.reload()
+                          }
+                          }
+                    >
+                      <div style={{backgroundColor:'',height:'80px'}} className='search-list'>
+                        <div className='row' style={{height:'79px'}}>
+                          <div className='col l-2' style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                            <img src={`${data.image}`} style={{width:'70%'}}/>
+                          </div>
+                          <div className='col l-10' style={{display:'flex',flexDirection:'column',color:'#333',paddingTop:'10px'}}>
+                            <h1 style={{margin:"0"}}>{data.name}</h1>
+                            <h2>Tác giả: <i style={{color:'rgb(64,73,255)',fontWeight:'700'}}>{data.author}</i></h2>
+                          </div>
+                        </div>
+                        <div style={{height:'1px',width:"100%",backgroundColor:'#ebebeb'}}/>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           </div>
           <div className='col l-4 m-4 c-4 navbar'>
@@ -793,38 +898,38 @@ function Header(props){
             {/* Nav PC*/}
             <div className='row header__navbar--list nav--pc'>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeTrangChu})}
-                    >
-                  <Link to="/">
+                   >
+                  <Link to="/" /*onClick={()=> Location.reload()}*/>
                     <div className='link'><p>Trang chủ</p></div>
                   </Link>
               </div>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeSachGiay})}
                     >
-                  <Link to="/sachgiay">
+                  <Link to="/sachgiay" /*onClick={()=> Location.reload()}*/>
                     <div className='link'><p>Sách giấy</p></div>
                   </Link>
               </div>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeSachDienTu})}
                   >
-                  <Link to="/sachdientu">
+                  <Link to="/sachdientu" /*onClick={()=> Location.reload()}*/>
                     <div className='link'><p>Sách điện tử</p></div>
                   </Link>
               </div>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeAudioBook})}
                    >
-                  <Link to="/audiobook">
+                  <Link to="/audiobook" /*onClick={()=> Location.reload()}*/ >
                     <div className='link'><p>Audio Book</p></div>
                   </Link>
               </div>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeVideoBook})}
                    >
-                  <Link to="/videobook">
+                  <Link to="/videobook" /*onClick={()=> Location.reload()}*/ >
                     <div className='link'><p>Video Book</p></div>
                   </Link>
               </div>
               <div className={classNames('col l-2 m-2 navbar',{'active': props.activeThuVien})}
                    >
-                  <Link to="/thuvien">
+                  <Link to="/thuvien" /*onClick={()=> Location.reload()}*/ >
                     <div className='link'><p>Thư viện</p></div>
                   </Link>
               </div>
@@ -884,6 +989,49 @@ function Header(props){
     
           </div>
        </div>
+       {props.activeBanner &&
+          <div className="banner" style={{backgroundColor:'#f0f0f0'}}>
+            <div className='grid wide' style={{paddingTop:'20px'}}>
+              <div className='row'>
+                  <div className='col l-8 m-12 c-12' style={{position:'relative',display:"flex",flexDirection:'column'}}>
+                    <i className="fa-solid fa-circle-chevron-left" 
+                        onClick={Prev}
+                        style={{color:"white",position:'absolute',top:'45%',left:'0%',fontSize:'30px',cursor:'pointer'}}></i>
+                    <img src={`${arrBanner[index]}`} style={{borderRadius:'15px',width:'100%'}}/>
+                    <i className="fa-solid fa-circle-chevron-right" 
+                        onClick={Next}
+                        style={{color:"white",position:'absolute',top:'45%',right:'0%',fontSize:'30px',cursor:'pointer'}}></i>
+                  </div>
+                  <div className='col l-4 m-0 c-0'>
+                    <div className='row'>
+                      <div className='col l-12'>
+                        <img src={banner21} style={{borderRadius:'15px',width:'100%'}}/>
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <div className='col l-12'>
+                        <img src={banner22} style={{borderRadius:'15px',width:'100%'}}/>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div className='row' style={{marginTop:'15px'}}>
+                  <div className='col l-3'>
+                    <img src={banner31} style={{width:'100%'}} />
+                  </div>
+                  <div className='col l-3'>
+                    <img src={banner32} style={{width:'100%'}} />
+                  </div>
+                  <div className='col l-3'>
+                    <img src={banner33} style={{width:'100%'}} />
+                  </div>
+                  <div className='col l-3'>
+                    <img src={banner34} style={{width:'100%'}} />
+                  </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   );

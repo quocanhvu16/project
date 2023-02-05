@@ -1,4 +1,4 @@
-import { calculateNewValue } from "@testing-library/user-event/dist/utils/edit/calculateNewValue";
+// import { calculateNewValue } from "@testing-library/user-event/dist/utils/edit/calculateNewValue";
 import { useEffect,useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,40 +6,14 @@ function Cart (){
     document.title= "Giỏ hàng"
     const dispatch= useDispatch();
     const coin = useSelector(state => state.coin)
-    const cart1 = useSelector(state => state.cart)
+    const cartData = useSelector(state => state.cart)
+    const billData = useSelector(state => state.bill)
     const [ payErr , setPayErr] = useState("")
     const [cart, setCart] = useState(()=>{
-        return [...cart1]
+        return [...cartData]
     })
-    console.log("cart1",cart1);
-    console.log(cart);
-    // const [cart ,setCart] = useState([
-    //     {
-    //         id:1,
-    //         "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
-    //         "name": "Đắc nhân tâm",
-    //         "cost": "108.000",
-    //         amount:1,
-    //         total: 108000
-    //     },
-    //     {
-    //         id:2,
-    //         "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
-    //         "name": "Chiếc lá cuối cùng",
-    //         "cost": "53.000",
-    //         amount:1,
-    //         total: 73000
-    //     },
-    //     {
-    //         id:3,
-    //         "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
-    //         "name": "Truyện Kiều",
-    //         "cost": "73.000",
-    //         amount:1,
-    //         total: 53000
-    //     }
-    // ])
     const checkLogin = useSelector(state => state.checkLogIn)
+    const idUser = useSelector(state => state.idUser)
     const [bill, setBill] = useState([])
     const [totalBill ,setTotalBill] = useState(0);
     const [checked , setChecked] = useState([])
@@ -48,13 +22,22 @@ function Cart (){
     const [showToastPayFailed, setShowToastPayFailed] = useState(false)
     const [showToastCartEmpty, setShowToastCartEmpty] = useState(false)
     const [coinUser ,setCoinUser] = useState(coin)
-    const clickTrash=(id)=>{
+    async function clickTrash(id){
         setCart(cart=>{
             const newCart = [...cart]
             for(let i=0 ; i< newCart?.length;i++){
                 if(newCart[i].id === id ){
-                    dispatch({"type":"removeProduct","payload":i})
                     newCart.splice(i,1)
+                    fetchChangeCart1(newCart)
+                    dispatch({"type":"removeProduct","payload": i})
+                    const userTemp={
+                        ...idUser,
+                        "information":{
+                            ...idUser.information,
+                            "cart":[...newCart]
+                        }
+                    }
+                    dispatch({'type':"getIdUser","payload":userTemp})
                     setBill(bill =>{
                         const newBill = [...bill]
                         for(let i=0 ; i< newBill?.length;i++){
@@ -65,10 +48,78 @@ function Cart (){
                         return newBill
                     })
                 }
+                if(newCart.length===0){
+                    setCheckedAll(false)
+                }
             }
             return newCart
         })
     }
+    async function fetchChangeCart1 (newCart){
+        const requestUrl = `http://localhost:3000/user/${idUser.id}`
+        const response = await fetch(requestUrl,{
+          method:"put",
+          body: JSON.stringify({
+            ...idUser,
+            "information":{
+                ...idUser.information,
+                cart:[...newCart],
+            }
+          }),
+          headers: {
+            "Content-type":"application/json"
+          }
+        })
+    }
+    async function fetchChangeCart2 (newCart,prev,coin){
+        const requestUrl = `http://localhost:3000/user/${idUser.id}`
+        const response1 = await fetch(requestUrl)
+        const responseJson = await response1.json()
+        var d = new Date();
+        var date = d.getDate();
+        var month = d.getMonth()+1
+        var year = d.getFullYear();
+        if(date<10){
+            date = "0"+date
+        }
+        if(month<10){
+            month = "0"+month
+        }
+        const prev1 = prev.map((prev)=>{
+            return {...prev, 
+                state: "Đang giao hàng",
+                color: "#f7941e",
+                "date": `${date}-${month}-${year}`
+            }
+        })
+        const bill1 = [...responseJson.information.bill,...prev1]
+        const userTemp={
+            ...idUser,
+            "information":{
+                ...idUser.information,
+                "coin":coin,
+                "cart":[...newCart],
+                "bill":[...bill1]
+            }
+        }
+        dispatch({'type':"getIdUser","payload":userTemp})
+        const response = await fetch(requestUrl,{
+          method:"put",
+          body: JSON.stringify({
+            ...idUser,
+            "information":{
+                ...idUser.information,
+                coin:coin,
+                cart:[...newCart],
+                bill:[...bill1]
+            }
+          }),
+          headers: {
+            "Content-type":"application/json"
+          }
+        })
+    }
+    // console.log(idUser);
     const clickCheckbox = (cart1,id) => {
         setChecked(prev=>{
             const isChecked = checked.includes(id)
@@ -98,6 +149,7 @@ function Cart (){
             }
         })
     }
+    // console.log(billData);
     useLayoutEffect(()=>{
         setTotalBill(() => {
             let total =0
@@ -128,7 +180,25 @@ function Cart (){
             })
         }
     },[checkedAll])
-    const clickPay = () => {
+    async function fetchChangeCoin(coin){
+        console.log(coin);
+        const requestUrl = `http://localhost:3000/user/${idUser.id}`
+        const response = await fetch(requestUrl,{
+            method:"put",
+            body: JSON.stringify({
+              ...idUser,
+              "information":{
+                  ...idUser.information,
+                  "coin": coin 
+              }
+            }),
+            headers: {
+              "Content-type":"application/json"
+            }
+        })
+    }
+    
+    async function clickPay ()  {
         const app = document.querySelector(".App")
         const loading = document.createElement('div')
         loading.classList.add("frostApp")
@@ -156,33 +226,50 @@ function Cart (){
             },1000) 
         }
         if(bill?.length !== 0 && payErr === ""){
+            app.removeChild(loading)
+            setShowToastPaySuccess(true)
+            dispatch({"type":"addBill","payload":bill})
+            setCart(cart => {
+                const newCart = [...cart]
+                // checked.sort(function(a, b){return b - a});
+                for(let i=newCart.length-1; i>=0; i--){
+                    for(let j=checked.length-1; j>= 0; j--){
+                        if(newCart[i]?.id === checked[j]){
+                            newCart.splice(i,1)
+                        }
+                    }   
+                }
+                setBill(prev => {
+                    setCoinUser(prevCoin => {
+                        let coinCurrent = prevCoin - totalBill
+                        async function a(){
+                            await fetchChangeCart2(newCart,prev,coinCurrent)
+                        }
+                        a()
+                        return coinCurrent
+                    })
+                    return []
+                }
+                )
+                return newCart
+            })
+            setChecked([])
+            setCheckedAll(false)
+
+            dispatch({"type":'payCoin',"payload":totalBill})
+
             setTimeout(()=>{
-                app.removeChild(loading)
-                setShowToastPaySuccess(true)
-                setCart(cart => {
-                    const newCart = [...cart]
-                    checked.sort(function(a, b){return b - a});
-                    for(let i=newCart.length-1; i>=0; i--){
-                        for(let j=checked.length-1; j>= 0; j--){
-                            if(newCart[i]?.id === checked[j]){
-                                newCart.splice(i,1)
-                            }
-                        }   
-                    }
-                    setBill([])
-                    return newCart
-                })
-                setChecked([])
-                setCheckedAll(false)
-                setCoinUser(prev => prev - totalBill)
-                dispatch({"type":'payCoin',"payload":totalBill})
-                setTimeout(()=>{
-                    setShowToastPaySuccess(false)
-                },4000)
-            },1000) 
-        }
-        
+                setShowToastPaySuccess(false)
+            },4000)
+        }      
     }
+
+    useEffect(()=>{
+        dispatch({"type":"initProduct","payload": cart})
+        if(!cart){
+            setCheckedAll(false)
+        }
+    },[cart])
     const clickClosePaySuccess=(e)=>{
         if(e.target.closest('.toast-close')){
           let a = document.querySelector('.toast')
@@ -304,7 +391,6 @@ function Cart (){
                         </div>
                         <div style={{backgroundColor:'#ffffff',borderRadius:'10px',marginTop:'15px'}}>
                             {cart?.map((cart,index)=>{
-                                cart.idCart = index
                                 return(
                                     <div key={cart.id}>
                                         <div className="row" style={{padding:'10px 20px'}}>

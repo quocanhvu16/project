@@ -1,38 +1,52 @@
+import { useEffect, useLayoutEffect, useState } from "react"
+import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 function Bill (){
     document.title ="Đơn hàng"
     const navigate = useNavigate()
-    const bill =[
-        {
-            id:1,
-            "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
-            "name": "Đắc nhân tâm",
-            "date": "01-02-2023",
-            total: 108000,
-            state: "Đang giao hàng",
-            color: "#f7941e"
-        },
-        {
-            id:2,
-            "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
-            "name": "Chiếc lá cuối cùng",
-            "date": "01-02-2023",
-            total: 73000,
-            state: "Đang giao hàng",
-            color: "#f7941e"
-        },
-        {
-            id:3,
-            "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
-            "name": "Truyện Kiều",
-            "date": "01-02-2023",
-            total: 53000,
-            // state: "Đã giao hàng",
-            // color: "green"
-            state: "Đang giao hàng",
-            color: "#f7941e"
+    const idUser = useSelector(state => state.idUser)
+    const [bill,setBill]= useState([])
+    useLayoutEffect(()=>{
+        async function fetchBill(){
+            const requestUrl = `http://localhost:3000/user/${idUser.id}`
+            const response = await fetch(requestUrl)
+            const responseJson = await response.json()
+            console.log(responseJson.information.bill);
+            setBill(responseJson.information.bill)
         }
-    ]
+        fetchBill()
+    }, [])
+    // const bill =[
+    //     {
+    //         id:1,
+    //         "image": "https://www.reader.com.vn/uploads/images/2019/10/30/19/dac-nhan-tam_600x865.png",
+    //         "name": "Đắc nhân tâm",
+    //         "date": "01-02-2023",
+    //         total: 108000,
+    //         state: "Đang giao hàng",
+    //         color: "#f7941e"
+    //     },
+    //     {
+    //         id:2,
+    //         "image": "https://toplist.vn/images/800px/bai-van-phan-tich-hinh-tuong-chiec-la-cuoi-cung-so-10-421040.jpg",
+    //         "name": "Chiếc lá cuối cùng",
+    //         "date": "01-02-2023",
+    //         total: 73000,
+    //         state: "Đang giao hàng",
+    //         color: "#f7941e"
+    //     },
+    //     {
+    //         id:3,
+    //         "image": "https://bvhttdl.mediacdn.vn/documents/491966/0/truyen+kieu.jpg",
+    //         "name": "Truyện Kiều",
+    //         "date": "01-02-2023",
+    //         total: 53000,
+    //         // state: "Đã giao hàng",
+    //         // color: "green"
+    //         state: "Đang giao hàng",
+    //         color: "#f7941e"
+    //     }
+    // ]
     const total = bill.reduce((a,b)=>{
         return a + b.total
     },0)
@@ -124,7 +138,7 @@ function Bill (){
                                                 <p style={{fontSize:'17px',fontWeight:'700'}}>Tên sản phẩm</p>
                                             </div>
                                             <div className="col l-2">
-                                                <p style={{fontSize:'17px',fontWeight:'700'}}>Ngày bán</p>
+                                                <p style={{fontSize:'17px',fontWeight:'700'}}>Ngày mua hàng</p>
                                             </div>
                                             <div className="col l-2">
                                                 <p style={{fontSize:'17px',fontWeight:'700'}}>Thành tiền</p>
@@ -133,9 +147,16 @@ function Bill (){
                                                 <p style={{fontSize:'17px',fontWeight:'700'}}>Trạng thái</p>
                                             </div>
                                         </div>
-                                        {bill.map((bill)=>{
+                                        {bill.map((bill,index)=>{
+                                            let color;
+                                            if(bill.type === "Sách giấy"){
+                                                color =  "#f7941e"
+                                            }
+                                            else{
+                                                color = "#5ba254"
+                                            }
                                             return(
-                                                <div>
+                                                <div key={index}>
                                                     <div className="bill-pc">
                                                         <div className="row" style={{marginBottom:'30px'}}>
                                                             <div className="col l-2">
@@ -151,7 +172,7 @@ function Bill (){
                                                                 <p style={{fontSize:'17px'}}>{bill.total}đ</p>
                                                             </div>
                                                             <div className="col l-2">
-                                                                <p style={{fontSize:'17px',color:`${bill.color}`}}>{bill.state}</p>
+                                                                <p style={{fontSize:'17px',color:`${color}`}}>{bill.type === "Sách giấy" ? bill.state: "Đã giao hàng"}</p>
                                                             </div>
                                                         </div>
                                                     </div>

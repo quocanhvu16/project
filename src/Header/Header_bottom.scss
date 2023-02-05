@@ -19,7 +19,7 @@
         .container{
             .search{
                 button{
-                    right: 10px !important;
+                    right: 25px !important;
 
                 }
             }
@@ -31,7 +31,7 @@
         .container{
             .search{
                 button{
-                    right: 10px !important;
+                    right: 25px !important;
 
                 }
             }
@@ -43,7 +43,7 @@
         .container{
             .search{
                 button{
-                    right: 5px !important;
+                    right: 20px !important;
 
                 }
             }
@@ -72,6 +72,18 @@
                 font-size: 15px;
                 padding-left: 3%;
                 padding-right: 17%;
+            }
+            .frame-search{
+                display: none;
+                .search-list{
+                    background-color: #ffffff;
+                }
+                .search-list:hover{
+                    background-color: #ebebeb;
+                }
+            }
+            input:focus ~ div{
+                display: block;
             }
             button{
                 position: absolute;
